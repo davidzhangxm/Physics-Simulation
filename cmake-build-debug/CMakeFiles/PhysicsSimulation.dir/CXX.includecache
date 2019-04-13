@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/camera.h
+glad/glad.h
+-
+glm/glm.hpp
+-
+glm/gtc/matrix_transform.hpp
+-
+vector
+-
+math.h
+-
+
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/main.cpp
+iostream
+-
+glad/glad.h
+-
+GLFW/glfw3.h
+-
+glm/glm.hpp
+-
+glm/gtc/matrix_transform.hpp
+-
+glm/gtc/type_ptr.hpp
+-
+camera.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/camera.h
+

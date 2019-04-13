@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++  -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/PhysicsSimulation.dir/main.cpp.o  -o PhysicsSimulation -lglfw.3.2 -lglad 
