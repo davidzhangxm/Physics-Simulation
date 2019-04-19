@@ -3,4 +3,10 @@
 
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../camera.h
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../main.cpp
+CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../mesh.h
+CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../shader.h
+CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../sphere.h
+
+CMakeFiles/PhysicsSimulation.dir/object.cpp.o: ../object.cpp
+CMakeFiles/PhysicsSimulation.dir/object.cpp.o: ../object.h
 

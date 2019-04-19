@@ -150,6 +150,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+object.o: object.cpp.o
+
+.PHONY : object.o
+
+# target to build an object file
+object.cpp.o:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/object.cpp.o
+.PHONY : object.cpp.o
+
+object.i: object.cpp.i
+
+.PHONY : object.i
+
+# target to preprocess a source file
+object.cpp.i:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/object.cpp.i
+.PHONY : object.cpp.i
+
+object.s: object.cpp.s
+
+.PHONY : object.s
+
+# target to generate assembly for a file
+object.cpp.s:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/object.cpp.s
+.PHONY : object.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,6 +189,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... object.o"
+	@echo "... object.i"
+	@echo "... object.s"
 .PHONY : help
 
 

@@ -88,6 +88,21 @@
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/main.cpp">
 			<Option target="PhysicsSimulation"/>
 		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/mesh.h">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/object.cpp">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/object.h">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/shader.h">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/sphere.h">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

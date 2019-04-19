@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/PhysicsSimulation.dir/main.cpp.o"
+  "CMakeFiles/PhysicsSimulation.dir/object.cpp.o"
   "PhysicsSimulation.pdb"
   "PhysicsSimulation"
 )
