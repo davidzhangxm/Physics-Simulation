@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -6,6 +7,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/normal.hpp>
 
 #include "camera.h"
 #include "shader.h"
@@ -25,7 +29,7 @@ unsigned int WIDTH = 800;
 unsigned int HEIGHT = 600;
 
 // camera
-glm::vec3 viewPoint = glm::vec3(0, 0.5, 1.5);
+glm::vec3 viewPoint = glm::vec3(0, 0.1, 1.5);
 Camera camera(viewPoint);
 float lastX = WIDTH / 2.0f;
 float lastY = HEIGHT / 2.0f;
@@ -34,13 +38,13 @@ bool firstMouse = true;
 //timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-float timestep = 1.0 / 30;
+float timestep = 1.0f / 30;
 
 //lighting
 
 
 //model
-glm::vec3 location = glm::vec3(0.2, 0.5, 0);
+glm::vec3 location = glm::vec3(-0.2, 0.5, 0);
 float densities = 900.0;  // kg/m3
 float v = 0.25;
 float E = 30.0;
@@ -90,17 +94,21 @@ int main() {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_PROGRAM_POINT_SIZE);
 
-    float ground[] = {
-        -3.7f, -0.5f, 3.5f,
-        -3.7f, -0.5f, -3.5f,
-         3.7f, -0.5f, -3.5f,
-         3.7f, -0.5f, 3.5f
+    std::vector<glm::vec3> ground = {
+            glm::vec3(-30.7f, 0.0f, 30.5f),
+            glm::vec3(-30.7f, 0.0f, -30.5f),
+            glm::vec3(30.7f, 0.0f, -30.5f),
+            glm::vec3(30.7f, 0.0f, 30.5f)
     };
+
 
     unsigned int indices[] = {
          0, 1, 2,
          0, 2, 3
     };
+
+    glm::vec3 ground_point = ground[0];
+    glm::vec3 ground_normal = glm::vec3(0, 1, 0);
 
 
     unsigned int VBO, VAO, EBO;
@@ -111,7 +119,7 @@ int main() {
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(ground), ground, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(ground)* sizeof(glm::vec3), &ground[0], GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -125,7 +133,7 @@ int main() {
 
     // model
     MassSpringSystem mesh("model/cube.1.node", "model/cube.1.face", "model/cube.1.ele", densities, location, v, E);
-    ForwardEulerIntegrator ForwardEuler;
+    MidpointIntegrator ForwardEuler;
 
 
     unsigned int vao, vbo, ebo;
@@ -202,7 +210,39 @@ int main() {
         ++i;
         std::cout << i << "\n";
         // update position
+        std::vector<glm::vec3> before_position = mesh.getVertex();
+        std::vector<glm::vec3> before_vel = mesh.getVelocity();
         ForwardEuler.Integrate(&mesh, timestep);
+        std::vector<glm::vec3> after_position = mesh.getVertex();
+        std::vector<glm::vec3> after_vel;
+
+        bool collide = false;
+        float t = std::numeric_limits<float>::max();
+        for (int j = 0; j < mesh.GetNumPoint(); ++j) {
+            float dist = after_position[j].y;
+            if(dist < 0.0f) {
+                float deltat = timestep * (before_position[j].y) / (before_position[j].y - after_position[j].y);
+                t = fminf(t, deltat);
+                collide = true;
+            }
+        }
+        if(collide){
+            int n = mesh.GetNumPoint();
+            mesh.SetPositions(before_position);
+            mesh.SetVelocities(before_vel);
+            before_position.clear();
+            before_vel.clear();
+            ForwardEuler.Integrate(&mesh, t);
+            mesh.GetVelocities(after_vel);
+            for (int j = 0; j < n; ++j) {
+                after_vel[j].y = -after_vel[j].y;
+            }
+            mesh.SetVelocities(after_vel);
+            after_vel.clear();
+
+        }
+
+
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferData(GL_ARRAY_BUFFER, mesh.GetNumPoint()*sizeof(glm::vec3), &mesh.getVertex()[0], GL_STATIC_DRAW);
     }

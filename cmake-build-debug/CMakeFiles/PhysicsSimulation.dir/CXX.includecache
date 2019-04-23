@@ -25,6 +25,8 @@ math.h
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/main.cpp
 iostream
 -
+limits
+-
 glad/glad.h
 -
 GLFW/glfw3.h
@@ -34,6 +36,8 @@ glm/glm.hpp
 glm/gtc/matrix_transform.hpp
 -
 glm/gtc/type_ptr.hpp
+-
+glm/gtx/normal.hpp
 -
 camera.h
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/camera.h

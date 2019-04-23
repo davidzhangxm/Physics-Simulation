@@ -17,6 +17,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/normal.hpp>
 
+glm::vec3 gravity = glm::vec3(0, -9.8, 0);
+
 float Lamba(float E, float v){
     return (E*v)/((1+v)*(1-2*v));
 }
@@ -40,7 +42,6 @@ public:
 
 class MassSpringSystem: public PhysicsSystem{
 public:
-    glm::vec3 gravity;
     MassSpringSystem(const char* vertexfile,
                      const char* edgefile,
                      const char* tetrahedrafile,
@@ -73,6 +74,7 @@ public:
 
     std::vector<glm::vec3> getVertex();
     std::vector<unsigned int> getIndex();
+    std::vector<glm::vec3> getVelocity();
 
 private:
     int numPoint;
@@ -87,9 +89,7 @@ private:
     std::vector<float> mass;
     float v;
     float E;
-    std::vector<glm::mat3> R;
     std::vector<glm::vec3> velocities;
-    std::vector<glm::vec3> accelerations;
     std::vector<glm::mat3> RestFrame;
 };
 
@@ -172,10 +172,10 @@ void MassSpringSystem::ComputeAccelerations(std::vector<glm::vec3> &acc) {
     }
 
     // gravity
-    acc[0] = glm::vec3(0, 0, 0);
-//    for (int k = 0; k < numPoint; ++k) {
-//        acc[k] += gravity;
-//    }
+//    acc[0] = glm::vec3(0, 0, 0);
+    for (int k = 0; k < numPoint; ++k) {
+        acc[k] += gravity;
+    }
 
     return;
 }
@@ -213,7 +213,7 @@ MassSpringSystem::MassSpringSystem(const char *vertexfile,
                                    float v,
                                    float E) {
     // parameter
-    this->gravity = glm::vec3(0, -9.82f, 0);
+
     this->v = v;
     this->E = E;
     this->dens = densities;
@@ -263,7 +263,10 @@ void MassSpringSystem::massRCalculation() {
 
 void MassSpringSystem::velocityInitialization() {
     std::vector<glm::vec3> vtmp(numPoint, glm::vec3(0, 0, 0));
-    vtmp[3] = glm::vec3(-0.1, 0, 0);
+    for (int i = 0; i < numPoint; ++i) {
+        vtmp[i] = glm::vec3(-0.2,0,0);
+    }
+//    vtmp[0] = glm::vec3(-0.2, 0, 0);
     velocities.clear();
     velocities.assign(vtmp.begin(), vtmp.end());
 }
@@ -378,9 +381,6 @@ void MassSpringSystem::readIndex(std::vector<unsigned int> tetrahedra) {
 }
 
 void MassSpringSystem::addVertex(float x, float y, float z) {
-//    vertex.push_back(x);
-//    vertex.push_back(y);
-//    vertex.push_back(z);
     vertex.push_back(glm::vec3(x, y, z));
 }
 
@@ -409,5 +409,7 @@ std::vector<glm::vec3> MassSpringSystem::getVertex() {
 std::vector<unsigned int> MassSpringSystem::getIndex() {
     return index;
 }
-
+std::vector<glm::vec3> MassSpringSystem::getVelocity() {
+    return velocities;
+}
 #endif //PHYSICSSIMULATION_PHYSYS_H
