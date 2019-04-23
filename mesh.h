@@ -71,7 +71,7 @@ void Mesh::readVertex(const char *vertexfile) {
             addVertex(atof(l2.c_str()), atof(l3.c_str()), atof(l4.c_str()));
         }
 
-        vertex.erase(vertex.begin(), vertex.begin()+3);
+//        vertex.erase(vertex.begin(), vertex.begin()+3);
         vertexstream.close();
 
     }

@@ -9,8 +9,9 @@
 
 #include "camera.h"
 #include "shader.h"
-#include "sphere.h"
+#include "physys.h"
 #include "mesh.h"
+#include "Integrator.h"
 
 #define CHECK_GL_ERRORS assert(glGetError() == GL_NO_ERROR)
 
@@ -24,7 +25,8 @@ unsigned int WIDTH = 800;
 unsigned int HEIGHT = 600;
 
 // camera
-Camera camera(glm::vec3(0.0, 0.0, 3.0));
+glm::vec3 viewPoint = glm::vec3(0, 0.5, 1.5);
+Camera camera(viewPoint);
 float lastX = WIDTH / 2.0f;
 float lastY = HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -32,11 +34,16 @@ bool firstMouse = true;
 //timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
+float timestep = 1.0 / 30;
 
 //lighting
 
-// gravity
-glm::vec3 gravity = glm::vec3(0, 9.82f, 0);
+
+//model
+glm::vec3 location = glm::vec3(0.2, 0.5, 0);
+float densities = 900.0;  // kg/m3
+float v = 0.25;
+float E = 30.0;
 
 void init(){
 
@@ -66,7 +73,7 @@ int main() {
     glfwSetScrollCallback(window, scroll_callback);
 
     // tell GLFW to capture our mouse
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+//    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // load all openGL functions pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -77,16 +84,17 @@ int main() {
 
     Shader groundShader("shader/ground.vs", "shader/ground.fs");
     Shader sp("shader/particle.vs", "shader/particle.fs");
+//    Shader forceShader("shader/particle.vs", "shader/particle.fs", "shader/particle.gs");
 
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_PROGRAM_POINT_SIZE);
 
     float ground[] = {
-        -0.7f, -0.5f, 0.5f,
-        -0.7f, -0.5f, -0.5f,
-         0.7f, -0.5f, -0.5f,
-         0.7f, -0.5f, 0.5f
+        -3.7f, -0.5f, 3.5f,
+        -3.7f, -0.5f, -3.5f,
+         3.7f, -0.5f, -3.5f,
+         3.7f, -0.5f, 3.5f
     };
 
     unsigned int indices[] = {
@@ -103,7 +111,7 @@ int main() {
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(ground), ground, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(ground), ground, GL_DYNAMIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -114,41 +122,10 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    float particle[] = {
-            0.0f, 0.0f, 0.0f,
-            0.1f, 0.0f, 0.0f,
-            0.0f, 0.1f, 0.0f,
-            0.0f, 0.0f, 0.1f
-    };
 
-    GLuint indicesBall[] = {
-            0, 1, 2,
-            1, 0, 3,
-            0, 2, 3,
-            2, 1, 3
-    };
-    unsigned int vaoBall, vboBall, eboBall;
-    glGenVertexArrays(1, &vaoBall);
-    glGenBuffers(1, &vboBall);
-    glGenBuffers(1, &eboBall);
-
-    glBindVertexArray(vaoBall);
-    glBindBuffer(GL_ARRAY_BUFFER, vboBall);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(particle), particle, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboBall);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesBall), indicesBall, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-    glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
-
-    // sphere
-
-    Mesh mesh("model/mymesh.1.node", "model/mymesh.1.face", "model/mymesh.1.ele");
+    // model
+    MassSpringSystem mesh("model/cube.1.node", "model/cube.1.face", "model/cube.1.ele", densities, location, v, E);
+    ForwardEulerIntegrator ForwardEuler;
 
 
     unsigned int vao, vbo, ebo;
@@ -158,7 +135,7 @@ int main() {
 
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, int(mesh.getVertex().size())*sizeof(float), &mesh.getVertex()[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mesh.GetNumPoint()*sizeof(glm::vec3), &mesh.getVertex()[0], GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, int(mesh.getIndex().size())*sizeof(float), &mesh.getIndex()[0], GL_STATIC_DRAW);
@@ -168,21 +145,24 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    int l1 = mesh.getVertex().size();
     int l2 = mesh.getIndex().size();
-    for(int i = 0; i < l1; ++i){
-        std::cout << mesh.getVertex()[i] << " ";
-        if((i+1)%3==0)
-            std::cout << "\n";
-    }
+    int i = 0;
 
-    for(int i = 0; i < l2; ++i){
-        std::cout << mesh.getIndex()[i] << " ";
-        if((i+1)%3==0)
-            std::cout << "\n";
-    }
+    // force shader
+//    unsigned int fvao, fvbo, febo;
+//    glGenVertexArrays(1, &fvao);
+//    glGenBuffers(1, &fvbo);
+//    glGenBuffers(1, &febo);
+//
+//    glBindVertexArray(fvao);
+//    glBindBuffer(GL_ARRAY_BUFFER, fvbo);
+//    glBufferData(GL_ARRAY_BUFFER, febo);
 
 
+
+//    mesh.SetPositions(ver);
+//    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//    glBufferData(GL_ARRAY_BUFFER, mesh.GetNumPoint()*sizeof(glm::vec3), &mesh.getVertex()[0], GL_STATIC_DRAW);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -191,14 +171,13 @@ int main() {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-
+//        std::cout << deltaTime << "\n";
         // input
         processInput(window);
 
         // render start
         glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         groundShader.use();
 
         glm::mat4 view         = glm::mat4(1.0f);
@@ -210,25 +189,27 @@ int main() {
         glUniformMatrix4fv(transLoc, 1, GL_FALSE, glm::value_ptr(transform));
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
+        groundShader.unuse();
 
         sp.use();
         glUniformMatrix4fv(glGetUniformLocation(sp.ID, "transform"), 1, GL_FALSE, glm::value_ptr(transform));
         glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLES, l2, GL_UNSIGNED_INT, 0);
-//        glDrawArrays(GL_POINT, 0, 2);
+        sp.unuse();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
+        ++i;
+        std::cout << i << "\n";
+        // update position
+        ForwardEuler.Integrate(&mesh, timestep);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, mesh.GetNumPoint()*sizeof(glm::vec3), &mesh.getVertex()[0], GL_STATIC_DRAW);
     }
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
-
-    glDeleteVertexArrays(1, &vaoBall);
-    glDeleteBuffers(1, &vboBall);
-    glDeleteBuffers(1, &eboBall);
 
     return 0;
 }

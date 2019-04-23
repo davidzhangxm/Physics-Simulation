@@ -82,6 +82,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Integrator.h">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/camera.h">
 			<Option target="PhysicsSimulation"/>
 		</Unit>
@@ -95,6 +98,9 @@
 			<Option target="PhysicsSimulation"/>
 		</Unit>
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/object.h">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h">
 			<Option target="PhysicsSimulation"/>
 		</Unit>
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/shader.h">

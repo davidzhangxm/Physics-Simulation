@@ -3,7 +3,7 @@ project(PhysicsSimulation)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(PhysicsSimulation main.cpp camera.h object.h object.cpp shader.h sphere.h mesh.h)
+add_executable(PhysicsSimulation main.cpp camera.h object.h object.cpp shader.h sphere.h mesh.h Integrator.h physys.h)
 
 target_link_libraries(PhysicsSimulation libglfw.3.2.dylib
                                         libglad.a)

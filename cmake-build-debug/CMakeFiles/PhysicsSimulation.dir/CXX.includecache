@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Integrator.h
+physys.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h
+
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/camera.h
 glad/glad.h
 -
@@ -35,10 +39,12 @@ camera.h
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/camera.h
 shader.h
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/shader.h
-sphere.h
-/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/sphere.h
+physys.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h
 mesh.h
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/mesh.h
+Integrator.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Integrator.h
 
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/mesh.h
 iostream
@@ -54,6 +60,24 @@ glm/glm.hpp
 glm/gtc/matrix_transform.hpp
 -
 glm/gtc/type_ptr.hpp
+-
+
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h
+iostream
+-
+vector
+-
+sstream
+-
+fstream
+-
+glm/glm.hpp
+-
+glm/gtc/matrix_transform.hpp
+-
+glm/gtc/type_ptr.hpp
+-
+glm/gtx/normal.hpp
 -
 
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/shader.h
@@ -68,17 +92,5 @@ fstream
 sstream
 -
 iostream
--
-
-/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/sphere.h
-iostream
--
-vector
--
-glm/glm.hpp
--
-glm/gtc/matrix_transform.hpp
--
-glm/gtc/type_ptr.hpp
 -
 
