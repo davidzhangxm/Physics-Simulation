@@ -40,11 +40,13 @@ void ForwardEulerIntegrator::Integrate(PhysicsSystem *system, float timestep){
 
     // Forward Euler step
     for(int i=0; i<numPoint; i++) {
-        std::cout << i+1 << ":" << acc[i].x << " " << acc[i].y << " " << acc[i].z <<"\n";
+//        std::cout << i+1 << ":" << acc[i].x << " " << acc[i].y << " " << acc[i].z <<"\n";
         vel[i] += timestep * acc[i];
         pos[i] += vel[i] * timestep;
 
     }
+//    std::cout << vel[0].x << " " << vel[0].y << " " << vel[0].z <<"\n";
+
     // Store results system->SetPositions(pos); system->SetVelocities(vel);
     system->SetPositions(pos);
     system->SetVelocities(vel);
@@ -102,7 +104,7 @@ void MidpointIntegrator::Integrate(PhysicsSystem *system, float timestep) {
         vel[i].y = (fabsf(vel[i].y) < EPIS)? 0 : vel[i].y;
         vel[i].z = (fabsf(vel[i].z) < EPIS)? 0 : vel[i].z;
 
-        std::cout << i+1 << ":" << vel[i].x << " " << vel[i].y << " " << vel[i].z <<"\n";
+//        std::cout << i+1 << ":" << vel[i].x << " " << vel[i].y << " " << vel[i].z <<"\n";
 
         pos[i] += vel[i] * timestep;
 

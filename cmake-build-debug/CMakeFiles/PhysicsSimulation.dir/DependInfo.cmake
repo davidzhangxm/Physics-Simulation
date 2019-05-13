@@ -5,7 +5,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/main.cpp" "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/cmake-build-debug/CMakeFiles/PhysicsSimulation.dir/main.cpp.o"
-  "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/object.cpp" "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/cmake-build-debug/CMakeFiles/PhysicsSimulation.dir/object.cpp.o"
+  "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.cpp" "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/cmake-build-debug/CMakeFiles/PhysicsSimulation.dir/physys.cpp.o"
+  "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/plane.cpp" "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/cmake-build-debug/CMakeFiles/PhysicsSimulation.dir/plane.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 

@@ -94,13 +94,16 @@
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/mesh.h">
 			<Option target="PhysicsSimulation"/>
 		</Unit>
-		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/object.cpp">
-			<Option target="PhysicsSimulation"/>
-		</Unit>
-		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/object.h">
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.cpp">
 			<Option target="PhysicsSimulation"/>
 		</Unit>
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/plane.cpp">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/plane.h">
 			<Option target="PhysicsSimulation"/>
 		</Unit>
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/shader.h">

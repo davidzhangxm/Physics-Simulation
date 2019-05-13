@@ -1,1 +1,1 @@
-/Library/Developer/CommandLineTools/usr/bin/c++  -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/PhysicsSimulation.dir/main.cpp.o CMakeFiles/PhysicsSimulation.dir/object.cpp.o  -o PhysicsSimulation -lglfw.3.2 -lglad 
+/Library/Developer/CommandLineTools/usr/bin/c++  -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/PhysicsSimulation.dir/main.cpp.o CMakeFiles/PhysicsSimulation.dir/plane.cpp.o CMakeFiles/PhysicsSimulation.dir/physys.cpp.o  -o PhysicsSimulation -lglfw.3.2 -lglad 

@@ -47,6 +47,8 @@ physys.h
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h
 mesh.h
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/mesh.h
+plane.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/plane.h
 Integrator.h
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Integrator.h
 
@@ -83,6 +85,20 @@ glm/gtc/type_ptr.hpp
 -
 glm/gtx/normal.hpp
 -
+shader.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/shader.h
+
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/plane.h
+glm/glm.hpp
+-
+glm/gtc/matrix_transform.hpp
+-
+glm/gtc/type_ptr.hpp
+-
+physys.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h
+shader.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/shader.h
 
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/shader.h
 glad/glad.h

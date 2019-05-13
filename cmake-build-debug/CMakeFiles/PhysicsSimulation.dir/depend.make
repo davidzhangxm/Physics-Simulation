@@ -6,8 +6,15 @@ CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../camera.h
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../main.cpp
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../mesh.h
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../physys.h
+CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../plane.h
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../shader.h
 
-CMakeFiles/PhysicsSimulation.dir/object.cpp.o: ../object.cpp
-CMakeFiles/PhysicsSimulation.dir/object.cpp.o: ../object.h
+CMakeFiles/PhysicsSimulation.dir/physys.cpp.o: ../physys.cpp
+CMakeFiles/PhysicsSimulation.dir/physys.cpp.o: ../physys.h
+CMakeFiles/PhysicsSimulation.dir/physys.cpp.o: ../shader.h
+
+CMakeFiles/PhysicsSimulation.dir/plane.cpp.o: ../physys.h
+CMakeFiles/PhysicsSimulation.dir/plane.cpp.o: ../plane.cpp
+CMakeFiles/PhysicsSimulation.dir/plane.cpp.o: ../plane.h
+CMakeFiles/PhysicsSimulation.dir/plane.cpp.o: ../shader.h
 

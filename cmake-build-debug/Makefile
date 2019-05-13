@@ -150,32 +150,59 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-object.o: object.cpp.o
+physys.o: physys.cpp.o
 
-.PHONY : object.o
+.PHONY : physys.o
 
 # target to build an object file
-object.cpp.o:
-	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/object.cpp.o
-.PHONY : object.cpp.o
+physys.cpp.o:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/physys.cpp.o
+.PHONY : physys.cpp.o
 
-object.i: object.cpp.i
+physys.i: physys.cpp.i
 
-.PHONY : object.i
+.PHONY : physys.i
 
 # target to preprocess a source file
-object.cpp.i:
-	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/object.cpp.i
-.PHONY : object.cpp.i
+physys.cpp.i:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/physys.cpp.i
+.PHONY : physys.cpp.i
 
-object.s: object.cpp.s
+physys.s: physys.cpp.s
 
-.PHONY : object.s
+.PHONY : physys.s
 
 # target to generate assembly for a file
-object.cpp.s:
-	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/object.cpp.s
-.PHONY : object.cpp.s
+physys.cpp.s:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/physys.cpp.s
+.PHONY : physys.cpp.s
+
+plane.o: plane.cpp.o
+
+.PHONY : plane.o
+
+# target to build an object file
+plane.cpp.o:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/plane.cpp.o
+.PHONY : plane.cpp.o
+
+plane.i: plane.cpp.i
+
+.PHONY : plane.i
+
+# target to preprocess a source file
+plane.cpp.i:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/plane.cpp.i
+.PHONY : plane.cpp.i
+
+plane.s: plane.cpp.s
+
+.PHONY : plane.s
+
+# target to generate assembly for a file
+plane.cpp.s:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/plane.cpp.s
+.PHONY : plane.cpp.s
 
 # Help Target
 help:
@@ -189,9 +216,12 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... object.o"
-	@echo "... object.i"
-	@echo "... object.s"
+	@echo "... physys.o"
+	@echo "... physys.i"
+	@echo "... physys.s"
+	@echo "... plane.o"
+	@echo "... plane.i"
+	@echo "... plane.s"
 .PHONY : help
 
 
