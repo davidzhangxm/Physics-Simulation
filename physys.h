@@ -31,6 +31,7 @@ public:
 
     virtual void SetPositions(const std::vector<glm::vec3> &pos){}
     virtual void SetVelocities(const std::vector<glm::vec3> &vel){}
+    virtual void SetAccelerations(const std::vector<glm::vec3> &vec){}
     virtual void ComputeAccelerations(std::vector<glm::vec3> &acc){}
 
     virtual std::vector<glm::vec3> getVertex() {}
@@ -74,6 +75,7 @@ public:
 
     void SetPositions(const std::vector<glm::vec3> &pos);
     void SetVelocities(const std::vector<glm::vec3> &vel);
+    void SetAccelerations(const std::vector<glm::vec3> &acc);
     void ComputeAccelerations(std::vector<glm::vec3> &acc);
 
 
@@ -88,6 +90,7 @@ public:
     void set_transformation(glm::mat4 transform);
     void render_system();
     void delete_shader();
+    void update();
 
 private:
     // geometry parameter
@@ -102,6 +105,7 @@ private:
     float dens;
     float timestep;
     bool use_gravity;
+    float air_resistence;
     glm::vec3 gravity;
     glm::vec3 location;
     std::vector<float> mass;

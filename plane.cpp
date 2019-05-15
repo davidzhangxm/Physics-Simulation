@@ -5,7 +5,7 @@
 #include "plane.h"
 
 Plane::Coef::Coef()
-: m_reflection(0.6f)
+: m_reflection(0.99f)
 , m_friction(0.1f)
 , m_repulsion(2.0f)
 {}
@@ -32,24 +32,33 @@ Plane::Plane(glm::vec3 origin,
 void Plane::processCollision(PhysicsSystem &phy) {
     glm::vec3 normal = m_normal;
     int numPoint = phy.GetNumPoint();
+    std::vector<glm::vec3> position = phy.getVertex();
+    std::vector<glm::vec3> velocity = phy.getVelocity();
+    std::vector<glm::vec3> force(numPoint, glm::vec3(0, 0, 0));
+
     for(int i = 0; i < numPoint; ++i)
     {
 
-        glm::vec3 p_position = phy.getVertex()[i];
-        glm::vec3 p_velovity = phy.getVelocity()[i];
+        glm::vec3 p_position = position[i];
+        glm::vec3 p_velovity = velocity[i];
 
         float dx = glm::dot(normal, p_position - m_origin);
         if(dx >= 0)
             continue;
-        phy.getVertex()[i] -= dx * normal;
+
+        position[i] -= dx * normal;
 
         float dv = glm::dot(normal, p_velovity);
         glm::vec3 v_normal = dv * normal;
-        phy.getVelocity()[i] -= m_corf.m_reflection* v_normal;
-        phy.getVelocity()[i] *= (1.0f - m_corf.m_friction);
+        glm::vec3 v_tangent = p_velovity - v_normal;
+        velocity[i] = -m_corf.m_reflection * v_normal + (1 - m_corf.m_friction) * v_tangent;
+        force[i] = m_corf.m_repulsion * normal;
 
-        phy.getAcceleration()[i] += m_corf.m_repulsion * normal / phy.getMass()[i];
+
     }
+    phy.SetPositions(position);
+    phy.SetVelocities(velocity);
+    phy.SetAccelerations(force);
 }
 
 void Plane::initShaders() {

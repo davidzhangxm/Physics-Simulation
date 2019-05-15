@@ -32,7 +32,7 @@ namespace {
     unsigned int HEIGHT = 600;
 
     // camera
-    glm::vec3 viewPoint = glm::vec3(0, 3.0, 3.5);
+    glm::vec3 viewPoint = glm::vec3(5, 10.0, 20.5);
     Camera camera(viewPoint);
     float lastX = WIDTH / 2.0f;
     float lastY = HEIGHT / 2.0f;
@@ -41,30 +41,26 @@ namespace {
     //timing
     float deltaTime = 0.0f;
     float lastFrame = 0.0f;
-    float timestep = 1.0f / 50;
+    float timestep = 1.0f / 300;
+    int step_per_frame = 5;
 
     //lighting
 
 
     //model
-    glm::vec3 location = glm::vec3(-0.2, 3, -1);
-    float densities = 900.0;  // kg/m3
-    float v = 0.4f;
-    float E = 50.0f;
-    float v_damping = 0.2f;
-    float E_damping = 40.0f;
-    bool use_gravity = false;
+    glm::vec3 location = glm::vec3(0.2, 10, -1);
+    float densities = 0.2;  // kg/m3
+    float v = 0.2f;
+    float E = 80.0f;
+    float v_damping = 0.01f;
+    float E_damping = 5.0f;
+    bool use_gravity = true;
 
     //ground
     glm::vec3 ground_origin(-30.7f, 0.0f, 30.5f);
     glm::vec3 ground_side1(0.0f, 0.0f, -1.0f);
     glm::vec3 ground_side2(1.0f, 0.0f, 0.0f);
     float ground_distance = 60.0f;
-
-}
-
-
-void init(){
 
 }
 
@@ -152,47 +148,14 @@ int main() {
         // draw geometry
         glfwSwapBuffers(window);
         glfwPollEvents();
-//        // update position
-//        std::vector<glm::vec3> before_position = mesh.getVertex();
-//        std::vector<glm::vec3> before_vel = mesh.getVelocity();
-//
-//        ForwardEuler.Integrate(&mesh, timestep);
-//
-//        std::vector<glm::vec3> after_position = mesh.getVertex();
-//        std::vector<glm::vec3> after_vel;
-//
-//        bool collide = false;
-//        std::vector<bool> collision(mesh.GetNumPoint(), false);
-//        float t = std::numeric_limits<float>::max();
-//        for (int j = 0; j < mesh.GetNumPoint(); ++j) {
-//            float dist = after_position[j].y;
-//            if(dist < 0.0f) {
-//                collision[j] = true;
-//                float deltat = timestep * (before_position[j].y) / (before_position[j].y - after_position[j].y);
-//                t = fminf(t, deltat);
-//                collide = true;
-//            }
-//        }
-//        if(collide){
-//            int n = mesh.GetNumPoint();
-//            mesh.SetPositions(before_position);
-//            mesh.SetVelocities(before_vel);
-//            before_position.clear();
-//            before_vel.clear();
-//            ForwardEuler.Integrate(&mesh, t);
-//            mesh.GetVelocities(after_vel);
-//            for (int j = 0; j < n; ++j) {
-//                if(collision[j])
-//                    after_vel[j].y = -after_vel[j].y;
-//            }
-//            mesh.SetVelocities(after_vel);
-//            after_vel.clear();
-//
-//        }
 
 
-//        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-//        glBufferData(GL_ARRAY_BUFFER, mesh.GetNumPoint()*sizeof(glm::vec3), &mesh.getVertex()[0], GL_STATIC_DRAW);
+        for (int i = 0; i < step_per_frame; ++i) {
+            ground.processCollision(mesh);
+            ForwardEuler.Integrate(&mesh, timestep);
+        }
+
+        mesh.update();
     }
 
     mesh.delete_shader();

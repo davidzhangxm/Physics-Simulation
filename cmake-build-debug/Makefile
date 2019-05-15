@@ -123,6 +123,33 @@ PhysicsSimulation/fast:
 	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/build
 .PHONY : PhysicsSimulation/fast
 
+Integrator.o: Integrator.cpp.o
+
+.PHONY : Integrator.o
+
+# target to build an object file
+Integrator.cpp.o:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.o
+.PHONY : Integrator.cpp.o
+
+Integrator.i: Integrator.cpp.i
+
+.PHONY : Integrator.i
+
+# target to preprocess a source file
+Integrator.cpp.i:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.i
+.PHONY : Integrator.cpp.i
+
+Integrator.s: Integrator.cpp.s
+
+.PHONY : Integrator.s
+
+# target to generate assembly for a file
+Integrator.cpp.s:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.s
+.PHONY : Integrator.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -213,6 +240,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... PhysicsSimulation"
+	@echo "... Integrator.o"
+	@echo "... Integrator.i"
+	@echo "... Integrator.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

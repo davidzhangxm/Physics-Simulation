@@ -30,14 +30,11 @@ void MassSpringSystem::ComputeAccelerations(std::vector<glm::vec3> &acc) {
         for(int i = 0; i < numPoint; ++i)
             acc[i] = gravity;
 
-//    float K[6][6] = {
-//            2*miu+lambda,  lambda,       lambda,       0,  0, 0,
-//            lambda,        2*miu+lambda, lambda,       0,  0, 0,
-//            lambda,        lambda,       2*miu+lambda, 0,  0, 0,
-//            0,            0,           0,           miu,0, 0,
-//            0,            0,           0,           0,  miu,0,
-//            0,            0,           0,           0,  0, miu
-//    };
+    // air resistence
+    for (int j = 0; j < numPoint; ++j) {
+        acc[j] += -air_resistence * velocities[j] / mass[j];
+        acc[j] += accelerations[j] / mass[j];
+    }
 
     for(int i = 0; i < numTetre; ++i){
         glm::vec3 ne1 = vertex[tetrahedra[4*i+2]] - vertex[tetrahedra[4*i+3]];
@@ -54,27 +51,10 @@ void MassSpringSystem::ComputeAccelerations(std::vector<glm::vec3> &acc) {
         glm::mat3 eps = float(0.5) * (glm::transpose(F) * F - glm::mat3(1.0));
         glm::mat3 d_eps = (eps - this->preEps[i]) * (1.0f/timestep);
         this->preEps[i] = eps;
-//        float Veps[] = {
-//                eps[0][0], eps[1][1], eps[2][2], 2*eps[2][1], 2*eps[2][0], 2*eps[1][0]
-//        };
-//
-//        float sigma[6] = {0 , 0, 0, 0, 0,0};
-//        for (int i = 0; i < 6; ++i) {
-//            for (int j = 0; j < 6; ++j) {
-//                sigma[i] += K[i][j] * Veps[j];
-//            }
-//        }
-//
-//        float sigma_matrix [] = {
-//                sigma[0], sigma[5], sigma[4],
-//                sigma[5], sigma[1], sigma[3],
-//                sigma[4], sigma[3], sigma[2]
-//        };
-//       glm::mat3 elasticity = glm::make_mat3(sigma_matrix);
 
         glm::mat3 elasticity = 2*miu*eps + lambda* (eps[0][0] + eps[1][1] + eps[2][2]) * glm::mat3(1.0) * glm::mat3(1.0);
         glm::mat3 damping = 2*miu_damping*d_eps + lambda_damping * (d_eps[0][0] + d_eps[1][1] + d_eps[2][2]) * glm::mat3(1.0);
-        glm::mat3 Sigma = elasticity+ damping;
+        glm::mat3 Sigma = elasticity + damping;
 
         // n1
         glm::vec3 n11(vertex[tetrahedra[4*i+2]] - vertex[tetrahedra[4*i+3]]);
@@ -100,7 +80,7 @@ void MassSpringSystem::ComputeAccelerations(std::vector<glm::vec3> &acc) {
         acc[tetrahedra[4*i+2]] += f3 / mass[tetrahedra[4*i+2]];
         acc[tetrahedra[4*i+3]] += f4 / mass[tetrahedra[4*i+3]];
     }
-    accelerations.assign(acc.begin(), acc.end());
+//    accelerations.assign(acc.begin(), acc.end());
 }
 
 
@@ -122,6 +102,10 @@ void MassSpringSystem::SetPositions(const std::vector<glm::vec3> &pos) {
 
 void MassSpringSystem::SetVelocities(const std::vector<glm::vec3> &vel) {
     velocities.assign(vel.begin(), vel.end());
+}
+
+void MassSpringSystem::SetAccelerations(const std::vector<glm::vec3> &acc) {
+    accelerations.assign(acc.begin(), acc.end());
 }
 
 /**
@@ -150,7 +134,8 @@ MassSpringSystem::MassSpringSystem(const char *vertexfile,
     this->miu_damping = P::Miu(E_damping, v_damping);
     this->timestep = timestep;
     this->use_gravity = use_gravity;
-    this->gravity = glm::vec3(0, -3, 0);
+    this->gravity = glm::vec3(0, -9.8, 0);
+    this->air_resistence = 0.01;
 
     // mesh load
     setMesh(vertexfile, edgefile, tetrahedrafile);
@@ -198,8 +183,8 @@ void MassSpringSystem::velocityInitialization() {
 //    for (int i = 0; i < numPoint; ++i) {
 //        vtmp[i] = glm::vec3(-0.2,0,0);
 //    }
-//    vtmp[51] = glm::vec3(-0.5, 0.5, 0);
-//    vtmp[0] = glm::vec3(0.1, 0.1, 0);
+//    vtmp[51] = glm::vec3(-0.5, 1.5, 0);
+//    vtmp[0] = glm::vec3(1.1, 0.1, 0);
     velocities.clear();
     velocities.assign(vtmp.begin(), vtmp.end());
 }
@@ -225,7 +210,7 @@ void MassSpringSystem::readVertex(const char *vertexfile) {
             linestream >> l2;
             linestream >> l3;
             linestream >> l4;
-            addVertex(atof(l2.c_str())/10+location.x, atof(l3.c_str())/10+location.y, atof(l4.c_str())/10+location.z);
+            addVertex(atof(l2.c_str())+location.x, atof(l3.c_str())+location.y, atof(l4.c_str())+location.z);
         }
 
         vertex.erase(vertex.begin());
@@ -389,4 +374,9 @@ void MassSpringSystem::delete_shader() {
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, & vbo);
     glDeleteBuffers(1, &ebo);
+}
+
+void MassSpringSystem::update() {
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, GetNumPoint()*sizeof(glm::vec3), &getVertex()[0], GL_STATIC_DRAW);
 }

@@ -82,6 +82,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Integrator.cpp">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Integrator.h">
 			<Option target="PhysicsSimulation"/>
 		</Unit>
