@@ -41,6 +41,12 @@ void MassSpringSystem::ComputeAccelerations(std::vector<glm::vec3> &acc) {
         glm::vec3 ne2 = vertex[tetrahedra[4*i+1]] - vertex[tetrahedra[4*i+3]];
         glm::vec3 ne3 = vertex[tetrahedra[4*i+0]] - vertex[tetrahedra[4*i+3]];
 
+        int p1 = tetrahedra[4*i+0];
+        int p2 = tetrahedra[4*i+1];
+        int p3 = tetrahedra[4*i+2];
+        int p4 = tetrahedra[4*i+3];
+
+
         float t[] = {
                 ne1.x, ne1.y, ne1.z,
                 ne2.x, ne2.y, ne2.z,
@@ -52,26 +58,26 @@ void MassSpringSystem::ComputeAccelerations(std::vector<glm::vec3> &acc) {
         glm::mat3 d_eps = (eps - this->preEps[i]) * (1.0f/timestep);
         this->preEps[i] = eps;
 
-        glm::mat3 elasticity = 2*miu*eps + lambda* (eps[0][0] + eps[1][1] + eps[2][2]) * glm::mat3(1.0) * glm::mat3(1.0);
+        glm::mat3 elasticity = 2*miu*eps + lambda* (eps[0][0] + eps[1][1] + eps[2][2]) * glm::mat3(1.0);
         glm::mat3 damping = 2*miu_damping*d_eps + lambda_damping * (d_eps[0][0] + d_eps[1][1] + d_eps[2][2]) * glm::mat3(1.0);
-        glm::mat3 Sigma = elasticity + damping;
+        glm::mat3 Sigma = elasticity ;
 
         // n1
-        glm::vec3 n11(vertex[tetrahedra[4*i+2]] - vertex[tetrahedra[4*i+3]]);
-        glm::vec3 n12(vertex[tetrahedra[4*i+1]] - vertex[tetrahedra[4*i+3]]);
+        glm::vec3 n11(position[tetrahedra[4*i+1]] - position[tetrahedra[4*i+2]]);
+        glm::vec3 n12(position[tetrahedra[4*i+3]] - position[tetrahedra[4*i+2]]);
         glm::vec3 f1 = -F * Sigma * glm::cross(n11, n12) * 0.5f;
         // n3
-        glm::vec3 n31(vertex[tetrahedra[4*i+1]] - vertex[tetrahedra[4*i+3]]);
-        glm::vec3 n32(vertex[tetrahedra[4*i+0]] - vertex[tetrahedra[4*i+3]]);
+        glm::vec3 n31(position[tetrahedra[4*i+0]] - position[tetrahedra[4*i+1]]);
+        glm::vec3 n32(position[tetrahedra[4*i+3]] - position[tetrahedra[4*i+1]]);
         glm::vec3 f3 = -F * Sigma * glm::cross(n31, n32) * 0.5f;
 
         // n2
-        glm::vec3 n21(vertex[tetrahedra[4*i+2]] - vertex[tetrahedra[4*i+0]]);
-        glm::vec3 n22(vertex[tetrahedra[4*i+3]] - vertex[tetrahedra[4*i+0]]);
+        glm::vec3 n21(position[tetrahedra[4*i+2]] - position[tetrahedra[4*i+0]]);
+        glm::vec3 n22(position[tetrahedra[4*i+3]] - position[tetrahedra[4*i+0]]);
         glm::vec3 f2 = -F * Sigma * glm::cross(n21, n22) * 0.5f;
         // n4
-        glm::vec3 n41(vertex[tetrahedra[4*i+1]] - vertex[tetrahedra[4*i+0]]);
-        glm::vec3 n42(vertex[tetrahedra[4*i+2]] - vertex[tetrahedra[4*i+0]]);
+        glm::vec3 n41(position[tetrahedra[4*i+1]] - position[tetrahedra[4*i+0]]);
+        glm::vec3 n42(position[tetrahedra[4*i+2]] - position[tetrahedra[4*i+0]]);
         glm::vec3 f4 = -F * Sigma * glm::cross(n41, n42) * 0.5f;
 
         //update acc
@@ -80,7 +86,15 @@ void MassSpringSystem::ComputeAccelerations(std::vector<glm::vec3> &acc) {
         acc[tetrahedra[4*i+2]] += f3 / mass[tetrahedra[4*i+2]];
         acc[tetrahedra[4*i+3]] += f4 / mass[tetrahedra[4*i+3]];
     }
-//    accelerations.assign(acc.begin(), acc.end());
+//    for(int i = 0; i < numPoint; ++i){
+//        acc[i] /= 10;
+//        float acc_norm = glm::length(acc[i]);
+//        if(acc_norm > 20)
+//            acc[i] /= 10;
+//    }
+
+    accelerations.assign(acc.begin(), acc.end());
+
 }
 
 
@@ -139,12 +153,7 @@ MassSpringSystem::MassSpringSystem(const char *vertexfile,
 
     // mesh load
     setMesh(vertexfile, edgefile, tetrahedrafile);
-    size_t t = vertex.size();
-    preEps.resize(numTetre);
-    mass.resize(numPoint);
-
-    massRCalculation();
-    velocityInitialization();
+    parameterInitialization();
 
 
 }
@@ -178,15 +187,31 @@ void MassSpringSystem::massRCalculation() {
     }
 }
 
-void MassSpringSystem::velocityInitialization() {
-    std::vector<glm::vec3> vtmp(numPoint, glm::vec3(0, 0, 0));
-//    for (int i = 0; i < numPoint; ++i) {
-//        vtmp[i] = glm::vec3(-0.2,0,0);
-//    }
-//    vtmp[51] = glm::vec3(-0.5, 1.5, 0);
-//    vtmp[0] = glm::vec3(1.1, 0.1, 0);
-    velocities.clear();
-    velocities.assign(vtmp.begin(), vtmp.end());
+void MassSpringSystem::parameterInitialization() {
+    size_t t = vertex.size();
+    preEps.resize(numTetre);
+    for(int i = 0; i < numTetre; ++i){
+        preEps[i] = glm::mat3(0.0);
+    }
+    // initialize mass
+    mass.resize(numPoint);
+    for(int i = 0; i < numPoint; ++i)
+        mass[i] = 0;
+
+    massRCalculation();
+
+    // initialize velocity
+    velocities.resize(numPoint);
+    for(int i = 0; i < numPoint; ++i){
+        velocities[i] = glm::vec3(0);
+    }
+    velocities[0] = glm::vec3(15.0, 0, 0);
+    position.assign(vertex.begin(), vertex.end());
+
+    // initialize acceleration
+    this->accelerations.resize(numPoint);
+    for(int i = 0; i < numPoint; ++i)
+        accelerations[i] = glm::vec3(0);
 }
 
 void MassSpringSystem::readVertex(const char *vertexfile) {
@@ -251,7 +276,7 @@ void MassSpringSystem::readFacefile(const char *facefile) {
     }
     catch(std::ifstream::failure e)
     {
-        std::cout << "vertex file fail read" << std::endl;
+        std::cout << "face file fail read" << std::endl;
     }
 
 }
@@ -279,12 +304,12 @@ void MassSpringSystem::readTetrafile(const char *tetrahedrafile) {
         }
         tetrahedrastream.close();
         tetrahedra.erase(tetrahedra.begin(), tetrahedra.begin()+4);
-        numTetre = int(tetrahedra.size())/4;
+        numTetre = int(tetrahedra.size() / 4);
 
     }
     catch(std::ifstream::failure e)
     {
-        std::cout << "vertex file fail read" << std::endl;
+        std::cout << "tetra file fail read" << std::endl;
     }
 }
 
@@ -379,4 +404,15 @@ void MassSpringSystem::delete_shader() {
 void MassSpringSystem::update() {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, GetNumPoint()*sizeof(glm::vec3), &getVertex()[0], GL_STATIC_DRAW);
+}
+
+void MassSpringSystem::build_aabb_tree() {
+    for(int i = 0; i < numPoint; ++i){
+        glm::vec3 p_position = vertex[i];
+        aabb_tree.extend(p_position);
+    }
+}
+
+CPM_GLM_AABB_NS::AABB MassSpringSystem::get_aabb() {
+    return aabb_tree;
 }

@@ -150,6 +150,60 @@ Integrator.cpp.s:
 	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.s
 .PHONY : Integrator.cpp.s
 
+debugger.o: debugger.cpp.o
+
+.PHONY : debugger.o
+
+# target to build an object file
+debugger.cpp.o:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/debugger.cpp.o
+.PHONY : debugger.cpp.o
+
+debugger.i: debugger.cpp.i
+
+.PHONY : debugger.i
+
+# target to preprocess a source file
+debugger.cpp.i:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/debugger.cpp.i
+.PHONY : debugger.cpp.i
+
+debugger.s: debugger.cpp.s
+
+.PHONY : debugger.s
+
+# target to generate assembly for a file
+debugger.cpp.s:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/debugger.cpp.s
+.PHONY : debugger.cpp.s
+
+glm-aabb/AABB.o: glm-aabb/AABB.cpp.o
+
+.PHONY : glm-aabb/AABB.o
+
+# target to build an object file
+glm-aabb/AABB.cpp.o:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.o
+.PHONY : glm-aabb/AABB.cpp.o
+
+glm-aabb/AABB.i: glm-aabb/AABB.cpp.i
+
+.PHONY : glm-aabb/AABB.i
+
+# target to preprocess a source file
+glm-aabb/AABB.cpp.i:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.i
+.PHONY : glm-aabb/AABB.cpp.i
+
+glm-aabb/AABB.s: glm-aabb/AABB.cpp.s
+
+.PHONY : glm-aabb/AABB.s
+
+# target to generate assembly for a file
+glm-aabb/AABB.cpp.s:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.s
+.PHONY : glm-aabb/AABB.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -243,6 +297,12 @@ help:
 	@echo "... Integrator.o"
 	@echo "... Integrator.i"
 	@echo "... Integrator.s"
+	@echo "... debugger.o"
+	@echo "... debugger.i"
+	@echo "... debugger.s"
+	@echo "... glm-aabb/AABB.o"
+	@echo "... glm-aabb/AABB.i"
+	@echo "... glm-aabb/AABB.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

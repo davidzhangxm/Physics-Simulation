@@ -17,6 +17,7 @@
 #include "mesh.h"
 #include "plane.h"
 #include "Integrator.h"
+#include "debugger.h"
 
 #define CHECK_GL_ERRORS assert(glGetError() == GL_NO_ERROR)
 
@@ -32,7 +33,7 @@ namespace {
     unsigned int HEIGHT = 600;
 
     // camera
-    glm::vec3 viewPoint = glm::vec3(5, 10.0, 20.5);
+    glm::vec3 viewPoint = glm::vec3(0, 5.0, 25.5);
     Camera camera(viewPoint);
     float lastX = WIDTH / 2.0f;
     float lastY = HEIGHT / 2.0f;
@@ -48,12 +49,13 @@ namespace {
 
 
     //model
-    glm::vec3 location = glm::vec3(0.2, 10, -1);
-    float densities = 0.2;  // kg/m3
+    glm::vec3 location_1 = glm::vec3(0.2, 10, -1);
+    glm::vec3 location_2 = glm::vec3(-3, 5, 1);
+    float densities = 0.3;  // kg/m3
     float v = 0.2f;
-    float E = 80.0f;
-    float v_damping = 0.01f;
-    float E_damping = 5.0f;
+    float E = 1500.0f;
+    float v_damping = 0.1f;
+    float E_damping = 20.0f;
     bool use_gravity = true;
 
     //ground
@@ -103,16 +105,41 @@ int main() {
     glEnable(GL_PROGRAM_POINT_SIZE);
 
     // model
+    MassSpringSystem cube("model/cube_origin/cube.node",
+                          "model/cube_origin/cube.face",
+                          "model/cube_origin/cube.ele",
+                          densities,
+                          location_1,
+                          v, E,
+                          v_damping, E_damping,
+                          timestep,
+                          use_gravity);
+    cube.initShader();
+
+
     MassSpringSystem mesh("model/cube/cube.1.node",
                           "model/cube/cube.1.face",
                           "model/cube/cube.1.ele",
                           densities,
-                          location,
+                          location_1,
                           v, E,
                           v_damping, E_damping,
                           timestep,
                           use_gravity);
     mesh.initShader();
+    debugger debug(mesh);
+
+    MassSpringSystem rectangle("model/rectangle/rectangle.1.node",
+                               "model/rectangle/rectangle.1.face",
+                               "model/rectangle/rectangle.1.ele",
+                               densities,
+                               location_2,
+                               v, E,
+                               v_damping, E_damping,
+                               timestep,
+                               use_gravity);
+    rectangle.initShader();
+    debugger debug_rectangle(rectangle);
 
     // ground
     Plane ground(ground_origin, ground_side1, ground_side2, ground_distance);
@@ -132,7 +159,7 @@ int main() {
         processInput(window);
 
         // render start
-        glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+        glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 view         = glm::mat4(1.0f);
@@ -142,23 +169,44 @@ int main() {
 
         ground.setTransform(transform);
         ground.renderPlane();
+//
+//        cube.set_transformation(transform);
+//        cube.render_system();
 
+//        debug_rectangle.set_transform(transform);
+//        debug_rectangle.render();
+
+        debug.set_transform(transform);
+//        debug.render();
+//
         mesh.set_transformation(transform);
         mesh.render_system();
+
+        rectangle.set_transformation(transform);
+        rectangle.render_system();
         // draw geometry
         glfwSwapBuffers(window);
         glfwPollEvents();
 
 
         for (int i = 0; i < step_per_frame; ++i) {
+//            ground.processCollision(cube);
+//            ForwardEuler.Integrate(&cube, timestep);
             ground.processCollision(mesh);
+            ground.processCollision(rectangle);
             ForwardEuler.Integrate(&mesh, timestep);
+            ForwardEuler.Integrate(&rectangle, timestep);
         }
 
+//        cube.update();
+//        debug_rectangle.update(rectangle);
+        debug.update(mesh);
         mesh.update();
+        rectangle.update();
     }
-
+    cube.delete_shader();
     mesh.delete_shader();
+    rectangle.delete_shader();
     ground.deleteBuffer();
 
     return 0;

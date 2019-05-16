@@ -5,9 +5,9 @@
 #include "plane.h"
 
 Plane::Coef::Coef()
-: m_reflection(0.99f)
+: m_reflection(0.6f)
 , m_friction(0.1f)
-, m_repulsion(2.0f)
+, m_repulsion(0.3f)
 {}
 
 Plane::Plane(glm::vec3 origin,

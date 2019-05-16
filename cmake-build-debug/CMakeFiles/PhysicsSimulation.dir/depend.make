@@ -3,21 +3,35 @@
 
 CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.o: ../Integrator.cpp
 CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.o: ../Integrator.h
+CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.o: ../glm-aabb/AABB.hpp
 CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.o: ../physys.h
 CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.o: ../shader.h
 
+CMakeFiles/PhysicsSimulation.dir/debugger.cpp.o: ../debugger.cpp
+CMakeFiles/PhysicsSimulation.dir/debugger.cpp.o: ../debugger.h
+CMakeFiles/PhysicsSimulation.dir/debugger.cpp.o: ../glm-aabb/AABB.hpp
+CMakeFiles/PhysicsSimulation.dir/debugger.cpp.o: ../physys.h
+CMakeFiles/PhysicsSimulation.dir/debugger.cpp.o: ../shader.h
+
+CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.o: ../glm-aabb/AABB.cpp
+CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.o: ../glm-aabb/AABB.hpp
+
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../Integrator.h
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../camera.h
+CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../debugger.h
+CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../glm-aabb/AABB.hpp
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../main.cpp
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../mesh.h
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../physys.h
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../plane.h
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o: ../shader.h
 
+CMakeFiles/PhysicsSimulation.dir/physys.cpp.o: ../glm-aabb/AABB.hpp
 CMakeFiles/PhysicsSimulation.dir/physys.cpp.o: ../physys.cpp
 CMakeFiles/PhysicsSimulation.dir/physys.cpp.o: ../physys.h
 CMakeFiles/PhysicsSimulation.dir/physys.cpp.o: ../shader.h
 
+CMakeFiles/PhysicsSimulation.dir/plane.cpp.o: ../glm-aabb/AABB.hpp
 CMakeFiles/PhysicsSimulation.dir/plane.cpp.o: ../physys.h
 CMakeFiles/PhysicsSimulation.dir/plane.cpp.o: ../plane.cpp
 CMakeFiles/PhysicsSimulation.dir/plane.cpp.o: ../plane.h

@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/PhysicsSimulation.dir/plane.cpp.o"
   "CMakeFiles/PhysicsSimulation.dir/physys.cpp.o"
   "CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.o"
+  "CMakeFiles/PhysicsSimulation.dir/debugger.cpp.o"
+  "CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.o"
   "PhysicsSimulation.pdb"
   "PhysicsSimulation"
 )

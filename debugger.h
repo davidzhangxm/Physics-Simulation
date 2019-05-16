@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "shader.h"
+#include "physys.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -16,14 +17,22 @@
 
 class debugger {
 public:
-    debugger(std::vector<glm::vec3> &position, std::vector<glm::vec3> &acceleration);
+    debugger(MassSpringSystem& system);
     ~debugger()= default;
 
+    void set_transform(glm::mat4 transform);
+    void render();
+    void update(MassSpringSystem& system);
+
 private:
+    std::vector<glm::vec3> normal_data;
+    int index_num;
     void init_shader();
     std::vector<glm::vec3> pos;
     std::vector<glm::vec3> acc;
+    std::vector<unsigned int> index;
     unsigned int vao, vbo, ebo;
+    glm::mat4 transform;
     Shader shader;
 };
 

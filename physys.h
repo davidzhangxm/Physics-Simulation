@@ -20,10 +20,13 @@
 #include <glm/gtx/normal.hpp>
 
 #include "shader.h"
+#include "glm-aabb/AABB.hpp"
 
 
 class PhysicsSystem{
 public:
+
+    unsigned int numTetre;
 //    virtual int GetNumDofs();
     virtual void GetPositions(std::vector<glm::vec3> &pos){}
     virtual void GetVelocities(std::vector<glm::vec3> &vel){}
@@ -66,7 +69,7 @@ public:
     void addTetra(unsigned int a, unsigned int b, unsigned int c, unsigned int d);
     void addIndex(unsigned int a, unsigned int b, unsigned int c);
     void massRCalculation();
-    void velocityInitialization();
+    void parameterInitialization();
 
     void GetPositions(std::vector<glm::vec3> &pos);
     void GetVelocities(std::vector<glm::vec3> &vel);
@@ -92,11 +95,16 @@ public:
     void delete_shader();
     void update();
 
+    // optimization
+    void build_aabb_tree();
+    CPM_GLM_AABB_NS::AABB get_aabb();
+
 private:
     // geometry parameter
     unsigned int numPoint;
-    unsigned int numTetre;
+
     std::vector<glm::vec3> vertex;
+    std::vector<glm::vec3> position;
     std::vector<unsigned int> index;
     std::vector<unsigned int> face;
     std::vector<unsigned int> tetrahedra;
@@ -124,6 +132,9 @@ private:
     unsigned int ebo;
     Shader m_system_shader;
     glm::mat4 transform;
+
+    // collision data structure
+    CPM_GLM_AABB_NS::AABB aabb_tree;
 };
 
 

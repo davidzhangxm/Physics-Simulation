@@ -4,21 +4,35 @@
 CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.o
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Integrator.cpp
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Integrator.h
+ /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.hpp
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/shader.h
+CMakeFiles/PhysicsSimulation.dir/debugger.cpp.o
+ /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/debugger.cpp
+ /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/debugger.h
+ /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.hpp
+ /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h
+ /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/shader.h
+CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.o
+ /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.cpp
+ /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.hpp
 CMakeFiles/PhysicsSimulation.dir/main.cpp.o
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Integrator.h
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/camera.h
+ /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/debugger.h
+ /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.hpp
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/main.cpp
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/mesh.h
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/plane.h
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/shader.h
 CMakeFiles/PhysicsSimulation.dir/physys.cpp.o
+ /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.hpp
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.cpp
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/shader.h
 CMakeFiles/PhysicsSimulation.dir/plane.cpp.o
+ /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.hpp
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/plane.cpp
  /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/plane.h
