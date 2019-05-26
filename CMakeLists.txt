@@ -3,7 +3,9 @@ project(PhysicsSimulation)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(PhysicsSimulation main.cpp
+add_executable(PhysicsSimulation
+#        test.cpp
+        main.cpp
         camera.h
         plane.h plane.cpp
         shader.h
@@ -16,8 +18,14 @@ add_executable(PhysicsSimulation main.cpp
         debugger.h
         debugger.cpp
         ./glm-aabb/AABB.hpp
-        ./glm-aabb/AABB.cpp)
-#tetra_intersect.h)
+        ./glm-aabb/AABB.cpp glm-aabb/AABB_tree.h glm-aabb/AABB_tree.cpp
+        tetra_intersect.h
+        tetra_intersect_volume.h
+        Qhull.h
+        Qhull.cpp
+        )
 
 target_link_libraries(PhysicsSimulation libglfw.3.2.dylib
-                                        libglad.a)
+                                        libglad.a
+        libqhullcpp.a
+        libqhullstatic_r.a)

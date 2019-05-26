@@ -36,5 +36,18 @@ private:
     Shader shader;
 };
 
+class polyhedron{
+public:
+    polyhedron(std::vector<glm::vec3> polyhedron);
+    ~polyhedron() = default;
 
+    void set_transform(glm::mat4 transform);
+    void render();
+    void update();
+private:
+    void init_shader();
+    std::vector<glm::vec3> point;
+    int size;
+
+};
 #endif //PHYSICSSIMULATION_DEBUGGER_H

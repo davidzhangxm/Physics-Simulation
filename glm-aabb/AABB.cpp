@@ -201,5 +201,10 @@ bool AABB::isSimilarTo(const AABB& b, float_t diff) const
   return true;
 }
 
+float AABB::calculate_surface_area() const {
+  return (2.0f * (getWidth() * getHeight() + getWidth() * getDepth() + getHeight() * getWidth()));
+}
+
+
 } // namespace CPM_GLM_AABB_NS
 

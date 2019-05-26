@@ -21,16 +21,18 @@
 
 #include "shader.h"
 #include "glm-aabb/AABB.hpp"
+#include "glm-aabb/AABB_tree.h"
 
 
 class PhysicsSystem{
 public:
 
-    unsigned int numTetre;
+
 //    virtual int GetNumDofs();
     virtual void GetPositions(std::vector<glm::vec3> &pos){}
     virtual void GetVelocities(std::vector<glm::vec3> &vel){}
     virtual unsigned int GetNumPoint(){return 0;}
+    virtual unsigned int GetNumTetra() {return 0;}
 
     virtual void SetPositions(const std::vector<glm::vec3> &pos){}
     virtual void SetVelocities(const std::vector<glm::vec3> &vel){}
@@ -69,12 +71,15 @@ public:
     void addTetra(unsigned int a, unsigned int b, unsigned int c, unsigned int d);
     void addIndex(unsigned int a, unsigned int b, unsigned int c);
     void massRCalculation();
+    void normalCalculation();
     void parameterInitialization();
 
     void GetPositions(std::vector<glm::vec3> &pos);
     void GetVelocities(std::vector<glm::vec3> &vel);
 
     unsigned int GetNumPoint();
+    unsigned int GetNumTetra();
+
 
     void SetPositions(const std::vector<glm::vec3> &pos);
     void SetVelocities(const std::vector<glm::vec3> &vel);
@@ -84,6 +89,8 @@ public:
 
     std::vector<glm::vec3> getVertex();
     std::vector<unsigned int> getIndex();
+    std::vector<unsigned int> getTetra();
+    void get_tetra(unsigned int tetra_id, std::vector<glm::vec3>& tetra);
     std::vector<glm::vec3> getVelocity();
     std::vector<glm::vec3> getAcceleration();
     std::vector<float> getMass();
@@ -94,20 +101,25 @@ public:
     void render_system();
     void delete_shader();
     void update();
+    void collision_force_clear();
+    void set_collision_force(unsigned int tetra_id, glm::vec3& force);
 
     // optimization
     void build_aabb_tree();
-    CPM_GLM_AABB_NS::AABB get_aabb();
+    AABB_Tree get_aabb_tree();
+    void update_aabb_tree();
+
 
 private:
     // geometry parameter
     unsigned int numPoint;
-
+    unsigned int numTetre;
     std::vector<glm::vec3> vertex;
     std::vector<glm::vec3> position;
     std::vector<unsigned int> index;
     std::vector<unsigned int> face;
     std::vector<unsigned int> tetrahedra;
+    std::vector<glm::vec3> normal;
 
     // integration parameter
     float dens;
@@ -123,6 +135,7 @@ private:
     float miu_damping;
     std::vector<glm::vec3> velocities;
     std::vector<glm::vec3> accelerations;
+    std::vector<glm::vec3> object_collision_force;
     std::vector<glm::mat3> RestFrame;
     std::vector<glm::mat3> preEps;
 
@@ -134,7 +147,8 @@ private:
     glm::mat4 transform;
 
     // collision data structure
-    CPM_GLM_AABB_NS::AABB aabb_tree;
+    AABB_Tree aabb_tree;
+    std::vector<CPM_GLM_AABB_NS::AABB> aabb_list;
 };
 
 

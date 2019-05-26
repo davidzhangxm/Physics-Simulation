@@ -9,6 +9,8 @@ namespace CPM_GLM_AABB_NS {
 class AABB
 {
 public:
+  float surfaceArea;
+
   /// Builds a null AABB.
   AABB();
 
@@ -97,6 +99,12 @@ public:
   /// If either of the two AABBs is NULL, then false is returned.
   /// \xxx Untested -- This function is not represented in our unit tests.
   bool isSimilarTo(const AABB& b, float_t diff = 0.5) const;
+
+  // calculate surface area of aabb
+  float calculate_surface_area() const;
+  float getWidth() const {return mMax.x - mMin.x; }
+  float getHeight() const {return mMax.y - mMin.y; }
+  float getDepth() const {return mMax.z - mMin.z; }
 
 private:
 

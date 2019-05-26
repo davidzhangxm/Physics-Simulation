@@ -18,6 +18,15 @@ namespace P{
     float Miu(float E, float v){
         return float(0.5) * E / (1+v);
     }
+    // volume of tetrahedron
+    float volume(glm::vec3& p0, glm::vec3& p1, glm::vec3& p2, glm::vec3& p3){
+        glm::vec3 e1 = p2 - p3;
+        glm::vec3 e2 = p1 - p3;
+        glm::vec3 e3 = p0 - p3;
+
+        float volume = glm::dot(glm::cross(e1, e2), e3) / 6.0;
+        return volume;
+    }
 }
 
 void MassSpringSystem::ComputeAccelerations(std::vector<glm::vec3> &acc) {
@@ -34,18 +43,13 @@ void MassSpringSystem::ComputeAccelerations(std::vector<glm::vec3> &acc) {
     for (int j = 0; j < numPoint; ++j) {
         acc[j] += -air_resistence * velocities[j] / mass[j];
         acc[j] += accelerations[j] / mass[j];
+        acc[j] += object_collision_force[j] / mass[j];
     }
 
     for(int i = 0; i < numTetre; ++i){
         glm::vec3 ne1 = vertex[tetrahedra[4*i+2]] - vertex[tetrahedra[4*i+3]];
         glm::vec3 ne2 = vertex[tetrahedra[4*i+1]] - vertex[tetrahedra[4*i+3]];
         glm::vec3 ne3 = vertex[tetrahedra[4*i+0]] - vertex[tetrahedra[4*i+3]];
-
-        int p1 = tetrahedra[4*i+0];
-        int p2 = tetrahedra[4*i+1];
-        int p3 = tetrahedra[4*i+2];
-        int p4 = tetrahedra[4*i+3];
-
 
         float t[] = {
                 ne1.x, ne1.y, ne1.z,
@@ -60,25 +64,12 @@ void MassSpringSystem::ComputeAccelerations(std::vector<glm::vec3> &acc) {
 
         glm::mat3 elasticity = 2*miu*eps + lambda* (eps[0][0] + eps[1][1] + eps[2][2]) * glm::mat3(1.0);
         glm::mat3 damping = 2*miu_damping*d_eps + lambda_damping * (d_eps[0][0] + d_eps[1][1] + d_eps[2][2]) * glm::mat3(1.0);
-        glm::mat3 Sigma = elasticity ;
+        glm::mat3 Sigma = elasticity;
 
-        // n1
-        glm::vec3 n11(position[tetrahedra[4*i+1]] - position[tetrahedra[4*i+2]]);
-        glm::vec3 n12(position[tetrahedra[4*i+3]] - position[tetrahedra[4*i+2]]);
-        glm::vec3 f1 = -F * Sigma * glm::cross(n11, n12) * 0.5f;
-        // n3
-        glm::vec3 n31(position[tetrahedra[4*i+0]] - position[tetrahedra[4*i+1]]);
-        glm::vec3 n32(position[tetrahedra[4*i+3]] - position[tetrahedra[4*i+1]]);
-        glm::vec3 f3 = -F * Sigma * glm::cross(n31, n32) * 0.5f;
-
-        // n2
-        glm::vec3 n21(position[tetrahedra[4*i+2]] - position[tetrahedra[4*i+0]]);
-        glm::vec3 n22(position[tetrahedra[4*i+3]] - position[tetrahedra[4*i+0]]);
-        glm::vec3 f2 = -F * Sigma * glm::cross(n21, n22) * 0.5f;
-        // n4
-        glm::vec3 n41(position[tetrahedra[4*i+1]] - position[tetrahedra[4*i+0]]);
-        glm::vec3 n42(position[tetrahedra[4*i+2]] - position[tetrahedra[4*i+0]]);
-        glm::vec3 f4 = -F * Sigma * glm::cross(n41, n42) * 0.5f;
+        glm::vec3 f1 = -F * Sigma * normal[4*i + 0] * 0.5f;
+        glm::vec3 f3 = -F * Sigma * normal[4*i + 1] * 0.5f;
+        glm::vec3 f2 = -F * Sigma * normal[4*i + 2] * 0.5f;
+        glm::vec3 f4 = -F * Sigma * normal[4*i + 3] * 0.5f;
 
         //update acc
         acc[tetrahedra[4*i+0]] += f1 / mass[tetrahedra[4*i+0]];
@@ -86,12 +77,6 @@ void MassSpringSystem::ComputeAccelerations(std::vector<glm::vec3> &acc) {
         acc[tetrahedra[4*i+2]] += f3 / mass[tetrahedra[4*i+2]];
         acc[tetrahedra[4*i+3]] += f4 / mass[tetrahedra[4*i+3]];
     }
-//    for(int i = 0; i < numPoint; ++i){
-//        acc[i] /= 10;
-//        float acc_norm = glm::length(acc[i]);
-//        if(acc_norm > 20)
-//            acc[i] /= 10;
-//    }
 
     accelerations.assign(acc.begin(), acc.end());
 
@@ -100,6 +85,10 @@ void MassSpringSystem::ComputeAccelerations(std::vector<glm::vec3> &acc) {
 
 unsigned int MassSpringSystem::GetNumPoint() {
     return numPoint;
+}
+
+unsigned int MassSpringSystem::GetNumTetra() {
+    return numTetre;
 }
 
 void MassSpringSystem::GetPositions(std::vector<glm::vec3> &pos) {
@@ -187,6 +176,28 @@ void MassSpringSystem::massRCalculation() {
     }
 }
 
+void MassSpringSystem::normalCalculation() {
+    for (int i = 0; i < numTetre; ++i) {
+        // n1
+        glm::vec3 n11(position[tetrahedra[4*i+1]] - position[tetrahedra[4*i+2]]);
+        glm::vec3 n12(position[tetrahedra[4*i+3]] - position[tetrahedra[4*i+2]]);
+        normal[4*i + 0] = glm::cross(n11, n12);
+        // n3
+        glm::vec3 n31(position[tetrahedra[4*i+0]] - position[tetrahedra[4*i+1]]);
+        glm::vec3 n32(position[tetrahedra[4*i+3]] - position[tetrahedra[4*i+1]]);
+        normal[4*i + 1] = glm::cross(n31, n32);
+
+        // n2
+        glm::vec3 n21(position[tetrahedra[4*i+2]] - position[tetrahedra[4*i+0]]);
+        glm::vec3 n22(position[tetrahedra[4*i+3]] - position[tetrahedra[4*i+0]]);
+        normal[4*i + 2] = glm::cross(n21, n22);
+        // n4
+        glm::vec3 n41(position[tetrahedra[4*i+1]] - position[tetrahedra[4*i+0]]);
+        glm::vec3 n42(position[tetrahedra[4*i+2]] - position[tetrahedra[4*i+0]]);
+        normal[4*i + 3] = glm::cross(n41, n42);
+    }
+}
+
 void MassSpringSystem::parameterInitialization() {
     size_t t = vertex.size();
     preEps.resize(numTetre);
@@ -198,6 +209,12 @@ void MassSpringSystem::parameterInitialization() {
     for(int i = 0; i < numPoint; ++i)
         mass[i] = 0;
 
+    // intialize normal
+    normal.resize(4*numTetre);
+    for (int j = 0; j < numTetre; ++j) {
+        normal[4*j+0] = glm::vec3(0);
+    }
+
     massRCalculation();
 
     // initialize velocity
@@ -208,10 +225,22 @@ void MassSpringSystem::parameterInitialization() {
     velocities[0] = glm::vec3(15.0, 0, 0);
     position.assign(vertex.begin(), vertex.end());
 
+    normalCalculation();
+
+
     // initialize acceleration
     this->accelerations.resize(numPoint);
     for(int i = 0; i < numPoint; ++i)
         accelerations[i] = glm::vec3(0);
+
+    // initialize collision force
+    this->object_collision_force.resize(numPoint);
+    for(int i = 0; i < numPoint; ++i)
+        object_collision_force[i] = glm::vec3(0);
+
+    // building aabb tree structure
+    aabb_tree = AABB_Tree(2*numTetre);
+    build_aabb_tree();
 }
 
 void MassSpringSystem::readVertex(const char *vertexfile) {
@@ -349,6 +378,17 @@ std::vector<glm::vec3> MassSpringSystem::getVertex() {
     return vertex;
 }
 
+std::vector<unsigned int> MassSpringSystem::getTetra() {
+    return tetrahedra;
+}
+
+void MassSpringSystem::get_tetra(unsigned int tetra_id, std::vector<glm::vec3>& tetra) {
+    tetra.push_back(vertex[tetrahedra[4 * tetra_id + 0]]);
+    tetra.push_back(vertex[tetrahedra[4 * tetra_id + 1]]);
+    tetra.push_back(vertex[tetrahedra[4 * tetra_id + 2]]);
+    tetra.push_back(vertex[tetrahedra[4 * tetra_id + 3]]);
+}
+
 std::vector<unsigned int> MassSpringSystem::getIndex() {
     return index;
 }
@@ -406,13 +446,60 @@ void MassSpringSystem::update() {
     glBufferData(GL_ARRAY_BUFFER, GetNumPoint()*sizeof(glm::vec3), &getVertex()[0], GL_STATIC_DRAW);
 }
 
+
+// build aabb tree from aabb list
 void MassSpringSystem::build_aabb_tree() {
-    for(int i = 0; i < numPoint; ++i){
-        glm::vec3 p_position = vertex[i];
-        aabb_tree.extend(p_position);
+    for (int i = 0; i < numTetre; ++i) {
+        glm::vec3 p1 = position[tetrahedra[4*i + 0]];
+        glm::vec3 p2 = position[tetrahedra[4*i + 1]];
+        glm::vec3 p3 = position[tetrahedra[4*i + 2]];
+        glm::vec3 p4 = position[tetrahedra[4*i + 3]];
+
+        Tetrahedra tet(p1, p2, p3, p4);
+        tet.ID = i;
+        aabb_tree.insertObject(tet);
     }
 }
 
-CPM_GLM_AABB_NS::AABB MassSpringSystem::get_aabb() {
+AABB_Tree MassSpringSystem::get_aabb_tree() {
     return aabb_tree;
+}
+// update aabb tree
+void MassSpringSystem::update_aabb_tree() {
+    for(int i = 0; i < numTetre; ++i){
+        glm::vec3 p1 = vertex[tetrahedra[4*i + 0]];
+        glm::vec3 p2 = vertex[tetrahedra[4*i + 1]];
+        glm::vec3 p3 = vertex[tetrahedra[4*i + 2]];
+        glm::vec3 p4 = vertex[tetrahedra[4*i + 3]];
+
+        Tetrahedra new_tet(p1, p2, p3, p4);
+        new_tet.ID = i;
+        aabb_tree.updateObject(new_tet);
+    }
+}
+
+// process object collision force on each point of corresponding tetrahedron
+void MassSpringSystem::set_collision_force(unsigned int tetra_id, glm::vec3& force) {
+
+
+
+    object_collision_force[tetrahedra[4*tetra_id + 0]] += force;
+    object_collision_force[tetrahedra[4*tetra_id + 1]] += force;
+    object_collision_force[tetrahedra[4*tetra_id + 2]] += force;
+    object_collision_force[tetrahedra[4*tetra_id + 3]] += force;
+
+
+
+
+//    velocities[tetrahedra[4*tetra_id + argMax]] = glm::vec3(0);
+
+
+
+}
+
+// before each iteration, clear collision force for each object
+void MassSpringSystem::collision_force_clear() {
+    for (int i = 0; i < numPoint; ++i) {
+        object_collision_force[i] = glm::vec3(0);
+    }
 }

@@ -10,6 +10,14 @@
 physys.h
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h
 
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Qhull.h
+libqhullcpp/QhullPoint.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/libqhullcpp/QhullPoint.h
+libqhullcpp/QhullVertex.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/libqhullcpp/QhullVertex.h
+libqhullcpp/QhullFacet.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/libqhullcpp/QhullFacet.h
+
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/camera.h
 glad/glad.h
 -
@@ -40,6 +48,16 @@ glm/gtc/type_ptr.hpp
 
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.hpp
 glm/glm.hpp
+-
+
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB_tree.h
+AABB.hpp
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.hpp
+vector
+-
+map
+-
+memory
 -
 
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/main.cpp
@@ -73,6 +91,10 @@ Integrator.h
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Integrator.h
 debugger.h
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/debugger.h
+object_collision.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/object_collision.h
+tetra_intersect.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/tetra_intersect.h
 
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/mesh.h
 iostream
@@ -89,6 +111,30 @@ glm/gtc/matrix_transform.hpp
 -
 glm/gtc/type_ptr.hpp
 -
+
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/object_collision.h
+iostream
+-
+vector
+-
+utility
+-
+glm/glm.hpp
+-
+glm/gtc/matrix_transform.hpp
+-
+glm/gtc/type_ptr.hpp
+-
+physys.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h
+glm-aabb/AABB.hpp
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.hpp
+glm-aabb/AABB_tree.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB_tree.h
+tetra_intersect_volume.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/tetra_intersect_volume.h
+tetra_intersect.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/tetra_intersect.h
 
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/physys.h
 iostream
@@ -111,6 +157,8 @@ shader.h
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/shader.h
 glm-aabb/AABB.hpp
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.hpp
+glm-aabb/AABB_tree.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB_tree.h
 
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/plane.h
 glm/glm.hpp
@@ -137,4 +185,38 @@ sstream
 -
 iostream
 -
+
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/tetra_intersect.h
+iostream
+-
+vector
+-
+glm/glm.hpp
+-
+glm/gtc/matrix_transform.hpp
+-
+glm/gtc/type_ptr.hpp
+-
+glm/gtx/normal.hpp
+-
+
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/tetra_intersect_volume.h
+iostream
+-
+algorithm
+-
+vector
+-
+set
+-
+glm/glm.hpp
+-
+glm/gtc/matrix_transform.hpp
+-
+glm/gtc/type_ptr.hpp
+-
+Qhull.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Qhull.h
+libqhullcpp/PointCoordinates.h
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/libqhullcpp/PointCoordinates.h
 

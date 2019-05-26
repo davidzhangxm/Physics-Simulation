@@ -68,3 +68,7 @@ void debugger::update(MassSpringSystem &system) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, size * 2 * sizeof(glm::vec3), &normal_data[0], GL_STATIC_DRAW);
 }
+
+polyhedron::polyhedron(std::vector<glm::vec3> polyhedron) {
+
+}

@@ -88,6 +88,12 @@
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Integrator.h">
 			<Option target="PhysicsSimulation"/>
 		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Qhull.cpp">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Qhull.h">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/camera.h">
 			<Option target="PhysicsSimulation"/>
 		</Unit>
@@ -101,6 +107,12 @@
 			<Option target="PhysicsSimulation"/>
 		</Unit>
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.hpp">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB_tree.cpp">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB_tree.h">
 			<Option target="PhysicsSimulation"/>
 		</Unit>
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/main.cpp">
@@ -128,6 +140,12 @@
 			<Option target="PhysicsSimulation"/>
 		</Unit>
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/sphere.h">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/tetra_intersect.h">
+			<Option target="PhysicsSimulation"/>
+		</Unit>
+		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/tetra_intersect_volume.h">
 			<Option target="PhysicsSimulation"/>
 		</Unit>
 		<Unit filename="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/CMakeLists.txt">

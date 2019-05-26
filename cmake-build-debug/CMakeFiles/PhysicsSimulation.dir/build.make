@@ -135,6 +135,32 @@ CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.cpp" -o CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.s
 
+CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.o: CMakeFiles/PhysicsSimulation.dir/flags.make
+CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.o: ../glm-aabb/AABB_tree.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.o -c "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB_tree.cpp"
+
+CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB_tree.cpp" > CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.i
+
+CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB_tree.cpp" -o CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.s
+
+CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.o: CMakeFiles/PhysicsSimulation.dir/flags.make
+CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.o: ../Qhull.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.o -c "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Qhull.cpp"
+
+CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Qhull.cpp" > CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.i
+
+CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/Qhull.cpp" -o CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.s
+
 # Object files for target PhysicsSimulation
 PhysicsSimulation_OBJECTS = \
 "CMakeFiles/PhysicsSimulation.dir/main.cpp.o" \
@@ -142,7 +168,9 @@ PhysicsSimulation_OBJECTS = \
 "CMakeFiles/PhysicsSimulation.dir/physys.cpp.o" \
 "CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.o" \
 "CMakeFiles/PhysicsSimulation.dir/debugger.cpp.o" \
-"CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.o"
+"CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.o" \
+"CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.o" \
+"CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.o"
 
 # External object files for target PhysicsSimulation
 PhysicsSimulation_EXTERNAL_OBJECTS =
@@ -153,9 +181,11 @@ PhysicsSimulation: CMakeFiles/PhysicsSimulation.dir/physys.cpp.o
 PhysicsSimulation: CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.o
 PhysicsSimulation: CMakeFiles/PhysicsSimulation.dir/debugger.cpp.o
 PhysicsSimulation: CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.o
+PhysicsSimulation: CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.o
+PhysicsSimulation: CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.o
 PhysicsSimulation: CMakeFiles/PhysicsSimulation.dir/build.make
 PhysicsSimulation: CMakeFiles/PhysicsSimulation.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable PhysicsSimulation"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable PhysicsSimulation"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/PhysicsSimulation.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

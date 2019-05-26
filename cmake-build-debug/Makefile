@@ -150,6 +150,33 @@ Integrator.cpp.s:
 	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/Integrator.cpp.s
 .PHONY : Integrator.cpp.s
 
+Qhull.o: Qhull.cpp.o
+
+.PHONY : Qhull.o
+
+# target to build an object file
+Qhull.cpp.o:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.o
+.PHONY : Qhull.cpp.o
+
+Qhull.i: Qhull.cpp.i
+
+.PHONY : Qhull.i
+
+# target to preprocess a source file
+Qhull.cpp.i:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.i
+.PHONY : Qhull.cpp.i
+
+Qhull.s: Qhull.cpp.s
+
+.PHONY : Qhull.s
+
+# target to generate assembly for a file
+Qhull.cpp.s:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/Qhull.cpp.s
+.PHONY : Qhull.cpp.s
+
 debugger.o: debugger.cpp.o
 
 .PHONY : debugger.o
@@ -203,6 +230,33 @@ glm-aabb/AABB.s: glm-aabb/AABB.cpp.s
 glm-aabb/AABB.cpp.s:
 	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB.cpp.s
 .PHONY : glm-aabb/AABB.cpp.s
+
+glm-aabb/AABB_tree.o: glm-aabb/AABB_tree.cpp.o
+
+.PHONY : glm-aabb/AABB_tree.o
+
+# target to build an object file
+glm-aabb/AABB_tree.cpp.o:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.o
+.PHONY : glm-aabb/AABB_tree.cpp.o
+
+glm-aabb/AABB_tree.i: glm-aabb/AABB_tree.cpp.i
+
+.PHONY : glm-aabb/AABB_tree.i
+
+# target to preprocess a source file
+glm-aabb/AABB_tree.cpp.i:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.i
+.PHONY : glm-aabb/AABB_tree.cpp.i
+
+glm-aabb/AABB_tree.s: glm-aabb/AABB_tree.cpp.s
+
+.PHONY : glm-aabb/AABB_tree.s
+
+# target to generate assembly for a file
+glm-aabb/AABB_tree.cpp.s:
+	$(MAKE) -f CMakeFiles/PhysicsSimulation.dir/build.make CMakeFiles/PhysicsSimulation.dir/glm-aabb/AABB_tree.cpp.s
+.PHONY : glm-aabb/AABB_tree.cpp.s
 
 main.o: main.cpp.o
 
@@ -297,12 +351,18 @@ help:
 	@echo "... Integrator.o"
 	@echo "... Integrator.i"
 	@echo "... Integrator.s"
+	@echo "... Qhull.o"
+	@echo "... Qhull.i"
+	@echo "... Qhull.s"
 	@echo "... debugger.o"
 	@echo "... debugger.i"
 	@echo "... debugger.s"
 	@echo "... glm-aabb/AABB.o"
 	@echo "... glm-aabb/AABB.i"
 	@echo "... glm-aabb/AABB.s"
+	@echo "... glm-aabb/AABB_tree.o"
+	@echo "... glm-aabb/AABB_tree.i"
+	@echo "... glm-aabb/AABB_tree.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

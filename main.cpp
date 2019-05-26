@@ -18,6 +18,8 @@
 #include "plane.h"
 #include "Integrator.h"
 #include "debugger.h"
+#include "object_collision.h"
+#include "tetra_intersect.h"
 
 #define CHECK_GL_ERRORS assert(glGetError() == GL_NO_ERROR)
 
@@ -33,7 +35,7 @@ namespace {
     unsigned int HEIGHT = 600;
 
     // camera
-    glm::vec3 viewPoint = glm::vec3(0, 5.0, 25.5);
+    glm::vec3 viewPoint = glm::vec3(0, 5.0, 40.5);
     Camera camera(viewPoint);
     float lastX = WIDTH / 2.0f;
     float lastY = HEIGHT / 2.0f;
@@ -49,13 +51,13 @@ namespace {
 
 
     //model
-    glm::vec3 location_1 = glm::vec3(0.2, 10, -1);
+    glm::vec3 location_1 = glm::vec3(-3, 10, 1);
     glm::vec3 location_2 = glm::vec3(-3, 5, 1);
     float densities = 0.3;  // kg/m3
     float v = 0.2f;
     float E = 1500.0f;
     float v_damping = 0.1f;
-    float E_damping = 20.0f;
+    float E_damping = 10.0f;
     bool use_gravity = true;
 
     //ground
@@ -105,7 +107,7 @@ int main() {
     glEnable(GL_PROGRAM_POINT_SIZE);
 
     // model
-    MassSpringSystem cube("model/cube_origin/cube.node",
+    MassSpringSystem cube1("model/cube_origin/cube.node",
                           "model/cube_origin/cube.face",
                           "model/cube_origin/cube.ele",
                           densities,
@@ -114,7 +116,18 @@ int main() {
                           v_damping, E_damping,
                           timestep,
                           use_gravity);
-    cube.initShader();
+    cube1.initShader();
+
+    MassSpringSystem cube2("model/cube_origin/cube.node",
+                          "model/cube_origin/cube.face",
+                          "model/cube_origin/cube.ele",
+                          densities,
+                          location_2,
+                          v, E,
+                          v_damping, E_damping,
+                          timestep,
+                          use_gravity);
+    cube2.initShader();
 
 
     MassSpringSystem mesh("model/cube/cube.1.node",
@@ -127,7 +140,6 @@ int main() {
                           timestep,
                           use_gravity);
     mesh.initShader();
-    debugger debug(mesh);
 
     MassSpringSystem rectangle("model/rectangle/rectangle.1.node",
                                "model/rectangle/rectangle.1.face",
@@ -139,7 +151,6 @@ int main() {
                                timestep,
                                use_gravity);
     rectangle.initShader();
-    debugger debug_rectangle(rectangle);
 
     // ground
     Plane ground(ground_origin, ground_side1, ground_side2, ground_distance);
@@ -147,7 +158,13 @@ int main() {
 
     ForwardEulerIntegrator ForwardEuler;
 
+    std::vector<MassSpringSystem> object_list = {rectangle, mesh};
+    debugger cube1_de(object_list[0]);
+    debugger cube2_de(object_list[1]);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+
+
 
     //render loop
     while(!glfwWindowShouldClose(window)){
@@ -169,15 +186,17 @@ int main() {
 
         ground.setTransform(transform);
         ground.renderPlane();
+        cube1.set_transformation(transform);
+        cube1.render_system();
+
+        cube2.set_transformation(transform);
+        cube2.render_system();
+
+//        cube1_de.set_transform(transform);
+//        cube1_de.render();
 //
-//        cube.set_transformation(transform);
-//        cube.render_system();
-
-//        debug_rectangle.set_transform(transform);
-//        debug_rectangle.render();
-
-        debug.set_transform(transform);
-//        debug.render();
+//        cube2_de.set_transform(transform);
+//        cube2_de.render();
 //
         mesh.set_transformation(transform);
         mesh.render_system();
@@ -190,21 +209,35 @@ int main() {
 
 
         for (int i = 0; i < step_per_frame; ++i) {
-//            ground.processCollision(cube);
-//            ForwardEuler.Integrate(&cube, timestep);
-            ground.processCollision(mesh);
-            ground.processCollision(rectangle);
-            ForwardEuler.Integrate(&mesh, timestep);
-            ForwardEuler.Integrate(&rectangle, timestep);
+            // clear obkject force first
+            CollideQuery::clear_collision_response(object_list);
+            // object collision detection
+            std::vector<std::tuple<int, int, std::vector<std::pair<unsigned int, unsigned int>>>> collide_result_list = CollideQuery::collide_quert_list(object_list);
+            // object collision response
+            if(!collide_result_list.empty())
+                CollideQuery::collision_response(collide_result_list, object_list);
+            // collision with ground
+            for (int j = 0; j < object_list.size(); ++j) {
+                ground.processCollision(object_list[j]);
+            }
+            // integration
+            for (int k = 0; k < object_list.size(); ++k) {
+                ForwardEuler.Integrate(&object_list[k], timestep);
+            }
+            // aabb update
+            for(int i = 0; i < object_list.size(); ++i)
+                object_list[i].update_aabb_tree();
         }
 
-//        cube.update();
-//        debug_rectangle.update(rectangle);
-        debug.update(mesh);
-        mesh.update();
-        rectangle.update();
+        // buffer data update
+        for (int l = 0; l < object_list.size(); ++l) {
+            object_list[l].update();
+        }
+        cube1_de.update(object_list[0]);
+        cube2_de.update(object_list[1]);
     }
-    cube.delete_shader();
+    cube1.delete_shader();
+    cube2.delete_shader();
     mesh.delete_shader();
     rectangle.delete_shader();
     ground.deleteBuffer();
