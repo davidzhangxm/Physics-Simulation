@@ -21,6 +21,8 @@
 #include "object_collision.h"
 #include "tetra_intersect.h"
 
+
+
 #define CHECK_GL_ERRORS assert(glGetError() == GL_NO_ERROR)
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -35,7 +37,7 @@ namespace {
     unsigned int HEIGHT = 600;
 
     // camera
-    glm::vec3 viewPoint = glm::vec3(0, 5.0, 40.5);
+    glm::vec3 viewPoint = glm::vec3(0, 10.0, 25.5);
     Camera camera(viewPoint);
     float lastX = WIDTH / 2.0f;
     float lastY = HEIGHT / 2.0f;
@@ -47,7 +49,12 @@ namespace {
     float timestep = 1.0f / 300;
     int step_per_frame = 5;
 
+    // fracture
+    bool fracture = false;
+    float roughness = 100.0f;
+
     //lighting
+    glm::vec3 lightPos(-3.0f, 20.0f, 5.0f);
 
 
     //model
@@ -55,16 +62,26 @@ namespace {
     glm::vec3 location_2 = glm::vec3(-3, 5, 1);
     float densities = 0.3;  // kg/m3
     float v = 0.2f;
-    float E = 1500.0f;
+    float E = 800.0f;
     float v_damping = 0.1f;
     float E_damping = 10.0f;
     bool use_gravity = true;
 
     //ground
-    glm::vec3 ground_origin(-30.7f, 0.0f, 30.5f);
+    glm::vec3 ground_origin(-15.0f, 0.0f, 15.0f);
     glm::vec3 ground_side1(0.0f, 0.0f, -1.0f);
     glm::vec3 ground_side2(1.0f, 0.0f, 0.0f);
-    float ground_distance = 60.0f;
+    float ground_distance = 30.0f;
+    // wall1
+    glm::vec3 wall_origin(-15.0f, 0.0f, 15.0f);
+    glm::vec3 wall_side1(0.0f, 1.0f, 0.0f);
+    glm::vec3 wall_side2(0.0f, 0.0f, -1.0f);
+    float wall_distance = 30.0f;
+    // wall2
+    glm::vec3 wall2_origin(-15.0f, 0.0f, -15.0f);
+    glm::vec3 wall2_side1(0.0f, 1.0f, 0.0f);
+    glm::vec3 wall2_side2(1.0f, 0.0f, 0.0f);
+    float wall2_distance = 30.0f;
 
 }
 
@@ -107,27 +124,33 @@ int main() {
     glEnable(GL_PROGRAM_POINT_SIZE);
 
     // model
-    MassSpringSystem cube1("model/cube_origin/cube.node",
-                          "model/cube_origin/cube.face",
-                          "model/cube_origin/cube.ele",
-                          densities,
-                          location_1,
-                          v, E,
-                          v_damping, E_damping,
-                          timestep,
-                          use_gravity);
-    cube1.initShader();
-
-    MassSpringSystem cube2("model/cube_origin/cube.node",
-                          "model/cube_origin/cube.face",
-                          "model/cube_origin/cube.ele",
-                          densities,
-                          location_2,
-                          v, E,
-                          v_damping, E_damping,
-                          timestep,
-                          use_gravity);
-    cube2.initShader();
+//    MassSpringSystem cube1("model/cube_origin/cube.node",
+//                          "model/cube_origin/cube.face",
+//                          "model/cube_origin/cube.ele",
+//                          densities,
+//                          location_1,
+//                          v, E,
+//                          v_damping, E_damping,
+//                          timestep,
+//                          use_gravity,
+//                          fracture,
+//                          roughness,
+//                          lightPos,
+//                          camera.Position);
+//    cube1.initShader();
+//
+//    MassSpringSystem cube2("model/cube_origin/cube.node",
+//                          "model/cube_origin/cube.face",
+//                          "model/cube_origin/cube.ele",
+//                          densities,
+//                          location_2,
+//                          v, E,
+//                          v_damping, E_damping,
+//                          timestep,
+//                          use_gravity,
+//                          fracture,
+//                          roughness);
+//    cube2.initShader();
 
 
     MassSpringSystem mesh("model/cube/cube.1.node",
@@ -138,33 +161,43 @@ int main() {
                           v, E,
                           v_damping, E_damping,
                           timestep,
-                          use_gravity);
+                          use_gravity,
+                          fracture,
+                          roughness,
+                          lightPos,
+                          camera.Position);
     mesh.initShader();
 
-    MassSpringSystem rectangle("model/rectangle/rectangle.1.node",
-                               "model/rectangle/rectangle.1.face",
-                               "model/rectangle/rectangle.1.ele",
-                               densities,
-                               location_2,
-                               v, E,
-                               v_damping, E_damping,
-                               timestep,
-                               use_gravity);
-    rectangle.initShader();
+//    MassSpringSystem rectangle("model/rectangle/rectangle.1.node",
+//                               "model/rectangle/rectangle.1.face",
+//                               "model/rectangle/rectangle.1.ele",
+//                               densities,
+//                               location_2,
+//                               v, E,
+//                               v_damping, E_damping,
+//                               timestep,
+//                               use_gravity,
+//                               fracture,
+//                               roughness);
+//    rectangle.initShader();
+
+
 
     // ground
-    Plane ground(ground_origin, ground_side1, ground_side2, ground_distance);
+    Plane ground(ground_origin, ground_side1, ground_side2, ground_distance, lightPos, camera.Position);
     ground.initShaders();
+
+    // wall1
+    Plane wall(wall_origin, wall_side1, wall_side2, wall_distance, lightPos, camera.Position);
+    wall.initShaders();
+
+    // wall2
+    Plane wall2(wall2_origin, wall2_side1, wall2_side2, wall2_distance, lightPos, camera.Position);
+    wall2.initShaders();
 
     ForwardEulerIntegrator ForwardEuler;
 
-    std::vector<MassSpringSystem> object_list = {rectangle, mesh};
-    debugger cube1_de(object_list[0]);
-    debugger cube2_de(object_list[1]);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-
-
+    std::vector<MassSpringSystem> object_list = {mesh};
 
     //render loop
     while(!glfwWindowShouldClose(window)){
@@ -175,34 +208,40 @@ int main() {
         // input
         processInput(window);
 
-        // render start
-        glClearColor(0.3f, 0.3f, 0.3f, 0.0f);
+        // render start 166, 202, 240
+//        glClearColor(0.65f, 0.79f, 0.94f, 0.0f);
+        glClearColor(0.05, 0.05, 0.05, 0.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 view         = glm::mat4(1.0f);
         view = camera.GetViewMatrix();
         glm::mat4 projection   = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH/(float)HEIGHT, 0.1f, 100.0f);
         glm::mat4 transform = projection * view;
+        glm::mat4 model = glm::mat4(1.0f);
 
         ground.setTransform(transform);
+        ground.setVirePos(camera.Position);
         ground.renderPlane();
-        cube1.set_transformation(transform);
-        cube1.render_system();
+        wall.setTransform(transform);
+        wall.setVirePos(camera.Position);
+        wall.renderPlane();
+        wall2.setTransform(transform);
+        wall2.setVirePos(camera.Position);
+        wall2.renderPlane();
 
-        cube2.set_transformation(transform);
-        cube2.render_system();
+//        cube1.set_transformation(transform);
+//        cube1.set_viewpos(camera.Position);
+//        cube1.render_system();
+//
+//        cube2.set_transformation(transform);
+//        cube2.render_system();
 
-//        cube1_de.set_transform(transform);
-//        cube1_de.render();
-//
-//        cube2_de.set_transform(transform);
-//        cube2_de.render();
-//
         mesh.set_transformation(transform);
+//        mesh.set_viewpos(camera.Position);
         mesh.render_system();
 
-        rectangle.set_transformation(transform);
-        rectangle.render_system();
+//        rectangle.set_transformation(transform);
+//        rectangle.render_system();
         // draw geometry
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -220,6 +259,12 @@ int main() {
             for (int j = 0; j < object_list.size(); ++j) {
                 ground.processCollision(object_list[j]);
             }
+            for (int j = 0; j < object_list.size(); ++j) {
+                wall.processCollision(object_list[j]);
+            }
+            for (int j = 0; j < object_list.size(); ++j) {
+                wall2.processCollision(object_list[j]);
+            }
             // integration
             for (int k = 0; k < object_list.size(); ++k) {
                 ForwardEuler.Integrate(&object_list[k], timestep);
@@ -233,14 +278,16 @@ int main() {
         for (int l = 0; l < object_list.size(); ++l) {
             object_list[l].update();
         }
-        cube1_de.update(object_list[0]);
-        cube2_de.update(object_list[1]);
+//        cube1_de.update(object_list[0]);
+//        cube2_de.update(object_list[1]);
     }
-    cube1.delete_shader();
-    cube2.delete_shader();
+//    cube1.delete_shader();
+//    cube2.delete_shader();
     mesh.delete_shader();
-    rectangle.delete_shader();
+//    rectangle.delete_shader();
     ground.deleteBuffer();
+    wall.deleteBuffer();
+    wall2.deleteBuffer();
 
     return 0;
 }

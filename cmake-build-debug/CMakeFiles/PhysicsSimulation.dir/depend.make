@@ -51,4 +51,5 @@ CMakeFiles/PhysicsSimulation.dir/plane.cpp.o: ../physys.h
 CMakeFiles/PhysicsSimulation.dir/plane.cpp.o: ../plane.cpp
 CMakeFiles/PhysicsSimulation.dir/plane.cpp.o: ../plane.h
 CMakeFiles/PhysicsSimulation.dir/plane.cpp.o: ../shader.h
+CMakeFiles/PhysicsSimulation.dir/plane.cpp.o: ../stb_image.h
 

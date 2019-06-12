@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <vector>
+#include <set>
 #include <sstream>
 #include <fstream>
 
@@ -22,6 +23,8 @@
 #include "shader.h"
 #include "glm-aabb/AABB.hpp"
 #include "glm-aabb/AABB_tree.h"
+
+#include "eigen3/Eigen/Dense"
 
 
 class PhysicsSystem{
@@ -37,7 +40,9 @@ public:
     virtual void SetPositions(const std::vector<glm::vec3> &pos){}
     virtual void SetVelocities(const std::vector<glm::vec3> &vel){}
     virtual void SetAccelerations(const std::vector<glm::vec3> &vec){}
-    virtual void ComputeAccelerations(std::vector<glm::vec3> &acc){}
+    virtual void ComputeAccelerations(std::vector<glm::vec3> &acc,
+                                      std::vector<std::vector<glm::vec3>>& tensile_forces,
+                                      std::vector<std::vector<glm::vec3>>& compress_forces){}
 
     virtual std::vector<glm::vec3> getVertex() {}
     virtual std::vector<unsigned int> getIndex() {}
@@ -58,7 +63,11 @@ public:
                      float v_damping,
                      float E_damping,
                      float timestep,
-                     bool use_gravity);
+                     bool use_gravity,
+                     bool fracture,
+                     float roughtness,
+                     glm::vec3 lightPos,
+                     glm::vec3 viewPos);
     ~MassSpringSystem() = default;
 
     void setMesh(const char* vertexfile, const char* facefile, const char* tetrahedrafile);
@@ -72,6 +81,7 @@ public:
     void addIndex(unsigned int a, unsigned int b, unsigned int c);
     void massRCalculation();
     void normalCalculation();
+    void surfaceNormalCalculation();
     void parameterInitialization();
 
     void GetPositions(std::vector<glm::vec3> &pos);
@@ -84,7 +94,9 @@ public:
     void SetPositions(const std::vector<glm::vec3> &pos);
     void SetVelocities(const std::vector<glm::vec3> &vel);
     void SetAccelerations(const std::vector<glm::vec3> &acc);
-    void ComputeAccelerations(std::vector<glm::vec3> &acc);
+    void ComputeAccelerations(std::vector<glm::vec3> &acc,
+                              std::vector<std::vector<glm::vec3>>& tensile_forces,
+                              std::vector<std::vector<glm::vec3>>& compress_forces);
 
 
     std::vector<glm::vec3> getVertex();
@@ -98,6 +110,7 @@ public:
     void initShader();
     // set transformation parametre
     void set_transformation(glm::mat4 transform);
+    void set_viewpos(glm::vec3 viewPos);
     void render_system();
     void delete_shader();
     void update();
@@ -109,10 +122,18 @@ public:
     AABB_Tree get_aabb_tree();
     void update_aabb_tree();
 
+    // facture
+    bool fracture;
+    float roughness;
+    void system_fracture(std::tuple<int, int, double, Eigen::Vector3cd>& break_point);
+    void split(int point, glm::vec3& n, std::set<int>& split_pathway);
+    void add_pt(int point);
+
 
 private:
     // geometry parameter
     unsigned int numPoint;
+    unsigned int numFace;
     unsigned int numTetre;
     std::vector<glm::vec3> vertex;
     std::vector<glm::vec3> position;
@@ -120,6 +141,7 @@ private:
     std::vector<unsigned int> face;
     std::vector<unsigned int> tetrahedra;
     std::vector<glm::vec3> normal;
+    std::vector<glm::vec3> surface_normal;
 
     // integration parameter
     float dens;
@@ -149,6 +171,12 @@ private:
     // collision data structure
     AABB_Tree aabb_tree;
     std::vector<CPM_GLM_AABB_NS::AABB> aabb_list;
+
+    //light
+    glm::vec3 lightPos;
+    glm::vec3 viewPos;
+    std::vector<glm::vec3> display;
+
 };
 
 

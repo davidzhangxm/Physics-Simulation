@@ -4,7 +4,27 @@
 
 #include "Integrator.h"
 
-void ForwardEulerIntegrator::Integrate(PhysicsSystem *system, float timestep){
+namespace FRACTURE{
+    Eigen::Matrix3d mf(glm::vec3& force){
+        Eigen::Matrix3d mf;
+        float force_norm = glm::length(force);
+        if(force_norm == 0){
+            mf << 0, 0, 0,
+                  0, 0, 0,
+                  0, 0, 0;
+            return mf;
+        }
+        double a = force.x;
+        double b = force.y;
+        double c = force.z;
+        mf << a*a, a*b, a*c,
+              b*a, b*b, b*c,
+              c*a, c*b, c*c;
+        return mf / force_norm;
+    }
+}
+
+void ForwardEulerIntegrator::Integrate(MassSpringSystem *system, float timestep){
     // Get positions & velocities
     int numPoint = system->GetNumPoint();
     std::vector<glm::vec3> pos , vel;
@@ -14,8 +34,11 @@ void ForwardEulerIntegrator::Integrate(PhysicsSystem *system, float timestep){
     // Compute accelerations
     std::vector<glm::vec3> acc;
     acc.clear();
-    system->ComputeAccelerations(acc);
+    std::vector<std::vector<glm::vec3>> tensile_forces(numPoint, std::vector<glm::vec3>());
+    std::vector<std::vector<glm::vec3>> compress_forces(numPoint, std::vector<glm::vec3>());
+    std::vector<Eigen::Matrix3d> sep_tensors(numPoint);
 
+    system->ComputeAccelerations(acc, tensile_forces, compress_forces);
 
     // Forward Euler step
     for(int i=0; i<numPoint; i++) {
@@ -26,8 +49,67 @@ void ForwardEulerIntegrator::Integrate(PhysicsSystem *system, float timestep){
     // Store results system->SetPositions(pos); system->SetVelocities(vel);
     system->SetPositions(pos);
     system->SetVelocities(vel);
+    if(system->fracture){
+        seperation_tensor_calculation(tensile_forces, compress_forces, sep_tensors);
+        std::tuple<int, int, double, Eigen::Vector3cd> sep_point = speration_point_calculation(sep_tensors);
+        if(std::get<2>(sep_point) > system->roughness){
+            // fracture happened
+            system->system_fracture(sep_point);
+        }
+
+    }
+
 }
 
+void ForwardEulerIntegrator::seperation_tensor_calculation(std::vector<std::vector<glm::vec3>> &tensile_forces,
+                                              std::vector<std::vector<glm::vec3>> &compress_forces,
+                                              std::vector<Eigen::Matrix3d>& sep_tensors) {
+    int numPoint = sep_tensors.size();
+    for (int i = 0; i < numPoint; ++i) {
+        glm::vec3 f_plus(0);
+        glm::vec3 f_minus(0);
+        Eigen::Matrix3d sp;
+        sp.setZero();
+        for (int j = 0; j < tensile_forces[i].size(); ++j) {
+            f_plus += tensile_forces[i][j];
+            sp += FRACTURE::mf(tensile_forces[i][j]);
+        }
+        for (int k = 0; k < compress_forces[i].size(); ++k) {
+            f_minus += compress_forces[i][k];
+            sp -= FRACTURE::mf(compress_forces[i][k]);
+        }
+        sp -= FRACTURE::mf(f_plus);
+        sp += FRACTURE::mf(f_minus);
+        sep_tensors[i] = sp;
+    }
+}
+
+std::tuple<int, int, double, Eigen::Vector3cd> ForwardEulerIntegrator::speration_point_calculation(std::vector<Eigen::Matrix3d> &sep_tensors) {
+    int numPoint = sep_tensors.size();
+    // point and eigen value index
+    int point = 0;
+    int eigen_index = -1;
+    double eigen_value = 0;
+    Eigen::Vector3cd eigen_vector;
+    for (int i = 0; i < numPoint; ++i) {
+//        std::cout << "---------" << i << "-----------" << "\n";
+//        std::cout << sep_tensors[i] << "\n";
+        Eigen::EigenSolver<Eigen::Matrix3d> es(sep_tensors[i]);
+        for(int k = 0; k < 3; ++k){
+            float eigen = float(es.eigenvalues()[k].real());
+            if (eigen > eigen_value){
+                point = i;
+                eigen_index = k;
+                eigen_value = eigen;
+                eigen_vector = es.eigenvectors().col(k);
+            }
+        }
+    }
+    return std::make_tuple(point, eigen_index, eigen_value, eigen_vector);
+
+}
+
+/*
 void MidpointIntegrator::Integrate(PhysicsSystem *system, float timestep) {
     // Get positions & velocities
     int numPoint = system->GetNumPoint();
@@ -83,3 +165,4 @@ void MidpointIntegrator::Integrate(PhysicsSystem *system, float timestep) {
     system->SetPositions(pos);
     system->SetVelocities(vel);
 }
+ */

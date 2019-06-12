@@ -141,6 +141,8 @@ iostream
 -
 vector
 -
+set
+-
 sstream
 -
 fstream
@@ -159,6 +161,8 @@ glm-aabb/AABB.hpp
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB.hpp
 glm-aabb/AABB_tree.h
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/glm-aabb/AABB_tree.h
+eigen3/Eigen/Dense
+/Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/eigen3/Eigen/Dense
 
 /Users/xinmingzhang/Engineering/Physics Simulation/PhysicsSimulation/plane.h
 glm/glm.hpp

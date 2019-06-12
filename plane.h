@@ -16,6 +16,8 @@
 #define VERTEX_SHADER ("shader/ground.vs")
 #define FRAGRANT_SHADER ("shader/ground.fs")
 
+
+
 class PhysicsSystem;
 
 class Plane{
@@ -24,7 +26,9 @@ public:
     Plane(glm::vec3 origin,
           glm::vec3 side1,
           glm::vec3 side2,
-          float distance);
+          float distance,
+          glm::vec3 lightPos,
+          glm::vec3 viewPos);
     ~Plane() = default;
 
     // manipulateor
@@ -38,6 +42,7 @@ public:
     void initShaders();
     void renderPlane();
     void setTransform(glm::mat4 transform);
+    void setVirePos(glm::vec3 viewPos);
     void deleteBuffer();
 
     // accessor
@@ -47,6 +52,7 @@ private:
     unsigned int vao;
     unsigned int vbo;
     unsigned int ebo;
+    unsigned int texture;
     glm::vec3 m_normal;
     glm::vec3 m_origin;
     glm::vec3 m_point1;
@@ -55,6 +61,8 @@ private:
     std::vector<glm::vec3> point;
     std::vector<unsigned int> index;
     glm::mat4 transform;
+    glm::vec3 lightPos;
+    glm::vec3 viewPos;
 
 };
 
