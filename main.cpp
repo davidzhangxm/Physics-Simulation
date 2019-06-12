@@ -220,13 +220,13 @@ int main() {
         glm::mat4 model = glm::mat4(1.0f);
 
         ground.setTransform(transform);
-        ground.setVirePos(camera.Position);
+//        ground.setVirePos(camera.Position);
         ground.renderPlane();
         wall.setTransform(transform);
-        wall.setVirePos(camera.Position);
+//        wall.setVirePos(camera.Position);
         wall.renderPlane();
         wall2.setTransform(transform);
-        wall2.setVirePos(camera.Position);
+//        wall2.setVirePos(camera.Position);
         wall2.renderPlane();
 
 //        cube1.set_transformation(transform);
